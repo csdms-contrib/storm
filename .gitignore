@@ -30,3 +30,7 @@
 
 # Emacs files
 *~
+
+# The `storm` executable and output files
+storm
+*.DATA
