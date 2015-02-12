@@ -34,3 +34,6 @@
 # The `storm` executable and output files
 storm
 *.DATA
+
+# Python files (used for nose tests)
+*.pyc
