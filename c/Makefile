@@ -7,7 +7,7 @@ LFLAGS =
 
 PROG = storm
 CLEAN = *.o *~
-CLEANER = $(PROG)
+CLEANER = $(PROG) *.data *.in
 
 all: $(PROG)
 
