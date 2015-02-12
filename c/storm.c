@@ -7,6 +7,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+// Names of input and output files.
+#define FILE_WIND_IN "wind.in"
+#define FILE_WDIR_OUT "wdir.data"
+#define FILE_WINDX_OUT "windx.data"
+#define FILE_WINDY_OUT "windy.data"
+
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 
 #define ACOR 0.0
@@ -43,7 +49,7 @@ int main(void) {
   size_t len = 0;
 
   // Open input file for reading.
-  fp_wind_in = fopen("wind.in", "r");
+  fp_wind_in = fopen(FILE_WIND_IN, "r");
 
   // Read max timesteps, grid dimensions, grid cell size.
   fscanf(fp_wind_in, "%d %d %d %lf %lf", &lmax, &im, &jm, &dx, &dy);
@@ -139,9 +145,9 @@ int main(void) {
 
   // Write output files. Note that index limits are decremented in
   // translation from Fortan to C.
-  fp_windx = fopen("windx.data", "w");
-  fp_windy = fopen("windy.data", "w");
-  fp_wdir = fopen("wdir.data", "w");
+  fp_windx = fopen(FILE_WINDX_OUT, "w");
+  fp_windy = fopen(FILE_WINDY_OUT, "w");
+  fp_wdir = fopen(FILE_WDIR_OUT, "w");
   for (l = 0; l < lmax; l++) {
     i3 = 0;
     i4 = 6;
