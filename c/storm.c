@@ -147,11 +147,17 @@ int main(void) {
     i4 = 6;
     while (i3 < im) {
       i4 = MIN((im - 1), i4);
+      fprintf(fp_windx, "%6d\n", l + 1);
+      fprintf(fp_windy, "%6d\n", l + 1);
       for (j = 0; j < jm; j++) {
 	for (i = i3; i <= i4; i++) {
 	  fprintf(fp_wdir, "%10.2e", wdir[l][j][i]);
+	  fprintf(fp_windx, "%10.2e", windx[l][j][i]);
+	  fprintf(fp_windy, "%10.2e", windy[l][j][i]);
 	}
 	fprintf(fp_wdir, "\n");
+	fprintf(fp_windx, "\n");
+	fprintf(fp_windy, "\n");
       }
       i3 = i4 + 1;
       i4 = i4 + 7;
