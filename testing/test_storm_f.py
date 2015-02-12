@@ -13,8 +13,9 @@ import shutil
 from subprocess import call
 
 # Globals
-data_dir = os.path.join(os.getcwd(), 'testing', 'data')
-f_dir = os.path.join(os.getcwd(), 'f')
+start_dir = os.getcwd()
+data_dir = os.path.join(start_dir, 'testing', 'data')
+f_dir = os.path.join(start_dir, 'f')
 input_file = 'wind.in'
 output_files = ('WDIR.DATA', 'WINDX.DATA', 'WINDY.DATA')
 output_file_lengths = (100, 104, 104)
@@ -25,7 +26,7 @@ def setup_module():
     '''
     Called before any tests are performed.
     '''
-    print('Fortran tests:')
+    print('*** Fortran tests')
     os.chdir(f_dir)
 
 def teardown_module():
@@ -34,6 +35,7 @@ def teardown_module():
     '''
     call(['make', 'clean'])
     for fn in output_files: os.remove(fn)
+    os.chdir(start_dir)
 
 def setup():
     '''
@@ -74,7 +76,7 @@ def test_output_files_exist():
 @with_setup(setup, teardown)
 def test_output_file_lengths():
     '''
-    Test the lengths of the three named output files
+    Test the lengths of the named output files
     '''
     r = call(['./storm'])
     for i in range(len(output_files)):
