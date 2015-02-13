@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/csdms-contrib/storm.svg?branch=master)](https://travis-ci.org/csdms-contrib/storm)
+
 # storm
 
 Storm computes the windfield for a cyclone based on 
