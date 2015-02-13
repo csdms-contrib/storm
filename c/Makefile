@@ -14,7 +14,7 @@ all: $(PROG)
 storm: storm.o
 
 %: %.o
-	$(CC) $(LFLAGS) $^ -o $@
+	$(CC) $(LFLAGS) $^ -o $@ -lm
 	@date
 
 %.o: %.c
