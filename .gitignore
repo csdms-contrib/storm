@@ -35,5 +35,8 @@
 storm
 *.DATA
 
+# Pkgconfig files
+*.pc
+
 # Python files (used for nose tests)
 *.pyc
