@@ -7,5 +7,9 @@
 int
 main(void) {
 
+  StormModel * m = storm_from_default ();
+
+  fprintf (stdout, "dx: %f\n", m->spacing[0]);
+  fprintf (stdout, "dy: %f\n", m->spacing[1]);
   return 0;
 }
