@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "heat.h"
+#include "storm.h"
 
 int initialize_arrays (StormModel *self);
 
