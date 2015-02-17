@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "storm.h"
 
@@ -20,6 +21,13 @@ storm_from_default (void)
     self->spacing[1] = 10000.0;
     self->center[0] = 24;
     self->center[1] = 12;
+    self->sspd = 5.0;
+    self->sdir = 210.0 * M_PI / 180.0;
+    self->pcent = 99000.0;
+    self->pedge = 101500.0;
+    self->rmaxw = 65000.0;
+    self->srad = 3000000.0;
+    self->defcon = 0.0;
   }
   else
     return NULL;
