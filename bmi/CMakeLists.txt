@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project (storm)
 
-set (STORM_VERSION 0.2)
+set (STORM_VERSION 0.1-bmi)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/stormc.pc.cmake
                 ${CMAKE_CURRENT_SOURCE_DIR}/stormc.pc)
