@@ -11,6 +11,7 @@ extern "C" {
 
 typedef struct {
   int t;              /* current time step */
+  int dt;             /* time increment */
   int t_end;          /* last time step */
   int t_next;         /* next time step for which data are read */
   int shape[2];       /* grid dimensions */
@@ -29,6 +30,12 @@ typedef struct {
 
 extern StormModel * storm_from_default (void);
 extern int storm_free (StormModel *self);
+extern int storm_advance_in_time (StormModel *self);
+extern int storm_compute_wind (double **wdir, double **wspd, 
+			       int shape[2], double spacing[2],
+			       int center[2], double sspd, double sdir,
+			       double pcent, double pedge, double rmaxw,
+			       double srad, double defcon);
 
 #if defined(__cplusplus)
 }

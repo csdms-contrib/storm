@@ -10,9 +10,11 @@ int initialize_arrays (StormModel *self);
 StormModel *
 storm_from_default (void)
 {
-  StormModel * self = (StormModel*) malloc (sizeof(StormModel));
+  StormModel *self = (StormModel*) malloc (sizeof(StormModel));
 
   if (self) {
+    self->t = 0;
+    self->dt = 1;
     self->t_end = 1;
     self->t_next = 2;
     self->shape[0] = 50;
@@ -68,5 +70,33 @@ storm_free (StormModel *self)
     free (self->wspd);
     free (self);
   }
+  return 0;
+}
+
+
+int
+storm_advance_in_time (StormModel *self)
+{
+  if (self) {
+    storm_compute_wind (self->wdir, self->wspd,
+			self->shape, self->spacing, self->center,
+			self->sspd, self->sdir,
+			self->pcent, self->pedge,
+			self->rmaxw, self->srad, self->defcon);
+    self->t += self->dt;
+  }
+  else
+    return 1;
+
+  return 0;
+}
+
+
+int
+storm_compute_wind (double **wdir, double **wspd, int shape[2],
+		    double spacing[2], int center[2], double sspd,
+		    double sdir, double pcent, double pedge,
+		    double rmaxw, double srad, double defcon)
+{
   return 0;
 }
