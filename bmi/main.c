@@ -16,7 +16,7 @@ main(void) {
   fprintf (stdout, "sdir: %f\n", m->sdir);
 
   for (i=0; i<10; i++) {
-    storm_advance_in_time (m);
+    storm_advance_time (m);
     fprintf (stdout, "Time: %d\n", m->t);
   }
 

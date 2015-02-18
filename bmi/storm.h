@@ -30,7 +30,7 @@ typedef struct {
 
 extern StormModel * storm_from_default (void);
 extern int storm_free (StormModel *self);
-extern int storm_advance_in_time (StormModel *self);
+extern int storm_advance_time (StormModel *self);
 extern int storm_compute_wind (double **wdir, double **wspd, 
 			       int shape[2], double spacing[2],
 			       int center[2], double sspd, double sdir,
