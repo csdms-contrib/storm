@@ -6,9 +6,15 @@
 #include "storm.h"
 
 int
-main(void) {
+main(int argc, char *argv[]) {
   int j;
-  StormModel *m = storm_from_default ();
+  StormModel *m = NULL;
+
+  if (argc == 1) {
+    m = storm_from_default ();
+  } else {
+    m = storm_from_input_file (argv[1]);
+  }
 
   fprintf (stdout, "dx: %f\n", m->spacing[0]);
   fprintf (stdout, "dy: %f\n", m->spacing[1]);

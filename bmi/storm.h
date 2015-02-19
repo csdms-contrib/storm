@@ -31,6 +31,7 @@ typedef struct {
 } StormModel;
 
 extern StormModel * storm_from_default (void);
+extern StormModel * storm_from_input_file (const char *filename);
 extern int storm_free (StormModel *self);
 extern int storm_advance_time (StormModel *self);
 extern int storm_compute_wind (double **wdir, double **wspd,

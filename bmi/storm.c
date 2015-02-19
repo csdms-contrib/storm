@@ -40,6 +40,57 @@ storm_from_default (void)
 }
 
 
+StormModel *
+storm_from_input_file (const char *filename)
+{
+  StormModel *self = NULL;
+  FILE *fp = NULL;
+  char *line = NULL;
+  size_t len = 0;
+  int t_end, xsize, ysize, xc, yc, t_next;
+  double dx, dy, sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
+
+  fp = fopen (filename, "r");
+  if (!fp)
+    return NULL;
+  else
+    self = (StormModel *) malloc (sizeof (StormModel));
+
+  fscanf(fp, "%d %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
+  getline(&line, &len, fp);
+
+  fscanf(fp, "%d %d %d", &xc, &yc, &t_next);
+  getline(&line, &len, fp);
+
+  fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf",			\
+	 &sspd, &sdir, &pcent, &pedge, &rmaxw, &srad, &defcon);
+  getline(&line, &len, fp);
+  sdir += ACOR;
+
+  self->t = 0;
+  self->dt = 1;
+  self->t_end = t_end;
+  self->t_next = t_next;
+  self->shape[0] = xsize;
+  self->shape[1] = ysize;
+  self->spacing[0] = dx;
+  self->spacing[1] = dy;
+  self->center[0] = xc;
+  self->center[1] = yc;
+  self->sspd = sspd;
+  self->sdir = sdir * M_PI / 180.0;
+  self->pcent = pcent;
+  self->pedge = pedge;
+  self->rmaxw = rmaxw;
+  self->srad = srad;
+  self->defcon = defcon;
+
+  initialize_arrays (self);
+
+  return self;
+}
+
+
 int
 initialize_arrays (StormModel *self)
 {
