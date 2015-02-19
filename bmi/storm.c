@@ -43,14 +43,19 @@ storm_from_default (void)
 int
 initialize_arrays (StormModel *self)
 {
+  int i;
+
   if (self) {
     const int n_rows = self->shape[0];
     const int n_cols = self->shape[1];
-    const int n_elements = n_rows * n_cols;
 
     /* Allocate memory */
-    self->wdir = (double **)malloc (sizeof (double*) * n_elements);
-    self->wspd = (double **)malloc (sizeof (double*) * n_elements);
+    self->wdir = (double **)malloc (sizeof (double *) * n_rows);
+    self->wspd = (double **)malloc (sizeof (double *) * n_rows);
+    for (i = 0; i < n_rows; i++) {
+      self->wdir[i] = (double *) malloc (sizeof (double) * n_cols);
+      self->wspd[i] = (double *) malloc (sizeof (double) * n_cols);
+    }
 
     if (!self->wdir || !self->wspd)
       return 1;
@@ -101,26 +106,10 @@ storm_compute_wind (double **wdir, double **wspd, int shape[2],
   int i, j;
   const int nx = shape[0];
   const int ny = shape[1];
-  const double dx = spacing[0];
-  const double dy = spacing[1];
-  const int xcenter = center[0];
-  const int ycenter = center[1];
-  double _wspd, _wdir;
-  double dxt, dyt, r, a, cc;
 
-  for (j = 0; j < ny; j++) {
-    for (i = 0; i < nx; i++) {
-      if (i == xcenter && j == ycenter) {
-	_wspd = sspd;
-	_wdir = sdir;
-      } else {
-	dxt = fabs((i - xcenter)*dx); /* should I cast this? */
-	dyt = fabs((j - ycenter)*dy);
-	r = sqrt(dxt*dxt + dyt*dyt);
-	a = 1.0 / r;
-	cc = -((pedge - pcent)/RHOA)*(rmaxw*(a*a))*exp(-rmaxw*a);
-	_wspd = (sqrt(F*F - 4.f*a*cc) - F)/(2.f*a);
-      }
+  for (i = 0; i < nx; i++) {
+    for (j = 0; j < ny; j++) {
+      wspd[i][j] = 10.0*i + j;
     }
   }
 

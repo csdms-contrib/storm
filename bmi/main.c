@@ -7,7 +7,7 @@
 
 int
 main(void) {
-  int i;
+  int i, j;
   StormModel *m = storm_from_default ();
 
   fprintf (stdout, "dx: %f\n", m->spacing[0]);
@@ -15,10 +15,15 @@ main(void) {
   fprintf (stdout, "sspd: %f\n", m->sspd);
   fprintf (stdout, "sdir: %f\n", m->sdir);
 
-  for (i=0; i<10; i++) {
-    storm_advance_time (m);
-    fprintf (stdout, "Time: %d\n", m->t);
+  storm_advance_time (m);
+  printf("wspd =\n");
+  for (i = 0; i < m->shape[0]; i++) {
+    for (j = 0; j < m->shape[1]; j++) {
+      printf("%f ", m->wspd[i][j]);
+    }
+    printf("\n");
   }
+  printf("\n");
 
   return 0;
 }
