@@ -6,6 +6,8 @@
 #include "storm.h"
 
 int initialize_arrays (StormModel *self);
+double gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
+		      double r, double rmaxw, double defcon);
 double gridcell_wspd (double r, double pcent, double pedge, double rmaxw);
 double xdistance_from_center (int i, double dx, int xc);
 double ydistance_from_center (int j, double dy, int yc);
@@ -122,23 +124,61 @@ storm_compute_wind (double **wdir, double **wspd, int shape[2],
   const double dy = spacing[1];
   const int xc = center[0];
   const int yc = center[1];
-  double dxc, dyc, r, wspd_ij;
+  double dxc, dyc, r, wdir_ij, wspd_ij;
 
   for (i = 0; i < nx; i++) {
     for (j = 0; j < ny; j++) {
       if (i == xc && j == yc) {
 	wspd_ij = sspd;
+	wdir_ij = sdir;
       } else {
 	dxc = xdistance_from_center(i, dx, xc);
 	dyc = ydistance_from_center(j, dy, yc);
 	r = euclidian_norm(dxc, dyc);
+	wdir_ij = gridcell_wdir (i, j, xc, yc, dxc, dyc, r, rmaxw, defcon);
 	wspd_ij = gridcell_wspd (r, pcent, pedge, rmaxw);
       }
+      wdir[i][j] = (wdir_ij * 180.0 / M_PI) - ACOR;
       wspd[i][j] = wspd_ij;
     }
   }
 
   return 0;
+}
+
+double
+gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
+	       double r, double rmaxw, double defcon)
+{
+  double _wdir;
+
+  if (j > yc) {
+    if (i > xc) {
+      _wdir = atan (dyc / dxc) + M_PI_2;
+    } else if (i < xc) {
+      _wdir = atan (dxc / dyc) + M_PI;
+    } else {
+      _wdir = M_PI;
+    }
+  } else if (j < yc) {
+    if (i > xc) {
+      _wdir = atan (dxc / dyc);
+    } else if (i < xc) {
+      _wdir = atan (dyc / dxc) + (1.5 * M_PI);
+    } else {
+      _wdir = 0.0;
+    }
+  } else {
+    if (i < xc) {
+      _wdir = 1.5 * M_PI;
+    } else {
+      _wdir = M_PI_2;
+    }
+  }
+
+  _wdir += defcon * (r / rmaxw) * (M_PI / 180.0);
+
+  return _wdir;
 }
 
 
