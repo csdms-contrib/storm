@@ -13,12 +13,12 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/.. )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
-set (bmi_storm_lib_SRCS bmi_storm.c storm.c)
+set (bmi_storm_lib_SRCS bmi_storm.c storm.c storm_compute.c)
 add_library (bmi_stormc ${bmi_storm_lib_SRCS} )
 
 ########### Storm main ###############
 
-set (storm_sources main.c storm.c)
+set (storm_sources main.c storm.c storm_compute.c)
 add_executable (storm ${storm_sources})
 
 ########### Install files ###############
