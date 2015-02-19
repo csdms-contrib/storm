@@ -7,8 +7,8 @@
 
 int initialize_arrays (StormModel *self);
 double gridcell_wspd (double r, double pcent, double pedge, double rmaxw);
-double distance_from_center (int i, int j, double dx, double dy,
-			     int xc, int yc);
+double xdistance_from_center (int i, double dx, int xc);
+double ydistance_from_center (int j, double dy, int yc);
 double euclidian_norm (double x, double y);
 
 StormModel *
@@ -122,23 +122,25 @@ storm_compute_wind (double **wdir, double **wspd, int shape[2],
   const double dy = spacing[1];
   const int xc = center[0];
   const int yc = center[1];
-  double r, g_wspd;
+  double dxc, dyc, r, wspd_ij;
 
   for (i = 0; i < nx; i++) {
     for (j = 0; j < ny; j++) {
-
       if (i == xc && j == yc) {
-	g_wspd = sspd;
+	wspd_ij = sspd;
       } else {
-	r = distance_from_center (i, j, dx, dy, xc, yc);
-	g_wspd = gridcell_wspd (r, pcent, pedge, rmaxw);
+	dxc = xdistance_from_center(i, dx, xc);
+	dyc = ydistance_from_center(j, dy, yc);
+	r = euclidian_norm(dxc, dyc);
+	wspd_ij = gridcell_wspd (r, pcent, pedge, rmaxw);
       }
-      wspd[i][j] = g_wspd;
+      wspd[i][j] = wspd_ij;
     }
   }
 
   return 0;
 }
+
 
 double
 gridcell_wspd (double r, double pcent, double pedge, double rmaxw)
@@ -151,13 +153,16 @@ gridcell_wspd (double r, double pcent, double pedge, double rmaxw)
 
 
 double
-distance_from_center (int i, int j, double dx, double dy, int xc, int yc)
+xdistance_from_center (int i, double dx, int xc)
 {
-  double dxt, dyt;
+  return fabs ((i - xc) * dx);
+}
 
-  dxt = fabs ((i - xc) * dx);
-  dyt = fabs ((j - yc) * dy);
-  return euclidian_norm (dxt, dyt);
+
+double
+ydistance_from_center (int j, double dy, int yc)
+{
+  return fabs ((j - yc) * dy);
 }
 
 
