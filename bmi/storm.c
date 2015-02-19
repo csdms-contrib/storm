@@ -52,17 +52,23 @@ initialize_arrays (StormModel *self)
   if (self) {
     const int n_rows = self->shape[0];
     const int n_cols = self->shape[1];
+    const int n_elements = n_rows * n_cols;
 
-    /* Allocate memory */
-    self->wdir = (double **)malloc (sizeof (double *) * n_rows);
-    self->wspd = (double **)malloc (sizeof (double *) * n_rows);
-    for (i = 0; i < n_rows; i++) {
-      self->wdir[i] = (double *) malloc (sizeof (double) * n_cols);
-      self->wspd[i] = (double *) malloc (sizeof (double) * n_cols);
-    }
-
+    self->wdir = (double **) malloc (sizeof (double *) * n_rows);
+    self->wspd = (double **) malloc (sizeof (double *) * n_rows);
     if (!self->wdir || !self->wspd)
       return 1;
+
+    self->wdir[0] = (double *) malloc (sizeof (double) * n_elements);
+    self->wspd[0] = (double *) malloc (sizeof (double) * n_elements);
+    if (!self->wdir[0] || !self->wspd[0])
+      return 1;
+
+    for (i = 1; i < n_rows; i++) {
+      self->wdir[i] = self->wdir[i-1] + n_cols;
+      self->wspd[i] = self->wspd[i-1] + n_cols;
+    }
+
   }
   else
     return 1;
