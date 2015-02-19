@@ -81,7 +81,9 @@ int
 storm_free (StormModel *self)
 {
   if (self) {
+    free (self->wdir[0]);
     free (self->wdir);
+    free (self->wspd[0]);
     free (self->wspd);
     free (self);
   }
