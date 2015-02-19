@@ -6,6 +6,10 @@
 #include "storm.h"
 
 int initialize_arrays (StormModel *self);
+double compute_gridcell_wspd (int i, int j, double dx, double dy, int xc,
+			      int yc, double sspd, double pcent,
+			      double pedge, double rmaxw);
+double euclidian_norm (double x, double y);
 
 StormModel *
 storm_from_default (void)
@@ -106,12 +110,45 @@ storm_compute_wind (double **wdir, double **wspd, int shape[2],
   int i, j;
   const int nx = shape[0];
   const int ny = shape[1];
+  const double dx = spacing[0];
+  const double dy = spacing[1];
+  const int xc = center[0];
+  const int yc = center[1];
 
   for (i = 0; i < nx; i++) {
     for (j = 0; j < ny; j++) {
-      wspd[i][j] = 10.0*i + j;
+      wspd[i][j] = compute_gridcell_wspd (i, j, dx, dy, xc, yc, sspd, pcent,
+      					  pedge, rmaxw);
     }
   }
 
   return 0;
+}
+
+double
+compute_gridcell_wspd (int i, int j, double dx, double dy, int xc, int yc,
+		       double sspd, double pcent, double pedge, double rmaxw)
+{
+  double wspd;
+  double dxt, dyt, r, a, cc;
+
+  if (i == xc && j == yc) {
+    wspd = sspd;
+  } else {
+    dxt = fabs ((i - xc) * dx);
+    dyt = fabs ((j - yc) * dy);
+    r = euclidian_norm (dxt, dyt);
+    a = 1.0 / r;
+    cc = -((pedge - pcent)/RHOA) * (rmaxw*(a*a)) * exp (-rmaxw*a);
+    wspd = (sqrt(F*F - 4.0*a*cc) - F)/(2.0*a);
+  }
+
+  return wspd;
+}
+
+
+double
+euclidian_norm (double x, double y)
+{
+  return sqrt (x*x + y*y);
 }
