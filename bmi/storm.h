@@ -26,12 +26,15 @@ typedef struct {
   double defcon;
   double **wdir;      /* wind direction */
   double **wspd;      /* wind speed */
+  double **windx;     /* x-component of wind */
+  double **windy;     /* y-component of wind */
 } StormModel;
 
 extern StormModel * storm_from_default (void);
 extern int storm_free (StormModel *self);
 extern int storm_advance_time (StormModel *self);
-extern int storm_compute_wind (double **wdir, double **wspd, 
+extern int storm_compute_wind (double **wdir, double **wspd,
+			       double **windx, double **windy,
 			       int shape[2], double spacing[2],
 			       int center[2], double sspd, double sdir,
 			       double pcent, double pedge, double rmaxw,

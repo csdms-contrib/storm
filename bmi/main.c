@@ -17,6 +17,16 @@ main(void) {
 
   storm_advance_time (m);
 
+  printf("windx[0,*] =\n");
+  for (j = 0; j < m->shape[1]; j++) {
+    printf("%f ", m->windx[0][j]);
+  }
+  printf("\n");
+  printf("windy[0,*] =\n");
+  for (j = 0; j < m->shape[1]; j++) {
+    printf("%f ", m->windy[0][j]);
+  }
+  printf("\n");
   printf("wspd[0,*] =\n");
   for (j = 0; j < m->shape[1]; j++) {
     printf("%f ", m->wspd[0][j]);

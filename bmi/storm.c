@@ -12,6 +12,7 @@ double gridcell_wspd (double r, double pcent, double pedge, double rmaxw);
 double xdistance_from_center (int i, double dx, int xc);
 double ydistance_from_center (int j, double dy, int yc);
 double euclidian_norm (double x, double y);
+double * speed_correction (double sspd, double sdir, double r, double rmaxw);
 
 StormModel *
 storm_from_default (void)
@@ -58,17 +59,23 @@ initialize_arrays (StormModel *self)
 
     self->wdir = (double **) malloc (sizeof (double *) * n_rows);
     self->wspd = (double **) malloc (sizeof (double *) * n_rows);
-    if (!self->wdir || !self->wspd)
+    self->windx = (double **) malloc (sizeof (double *) * n_rows);
+    self->windy = (double **) malloc (sizeof (double *) * n_rows);
+    if (!self->wdir || !self->wspd || !self->windx || !self->windy)
       return 1;
 
     self->wdir[0] = (double *) malloc (sizeof (double) * n_elements);
     self->wspd[0] = (double *) malloc (sizeof (double) * n_elements);
-    if (!self->wdir[0] || !self->wspd[0])
+    self->windx[0] = (double *) malloc (sizeof (double) * n_elements);
+    self->windy[0] = (double *) malloc (sizeof (double) * n_elements);
+    if (!self->wdir[0] || !self->wspd[0] || !self->windx[0] || !self->windy[0])
       return 1;
 
     for (i = 1; i < n_rows; i++) {
       self->wdir[i] = self->wdir[i-1] + n_cols;
       self->wspd[i] = self->wspd[i-1] + n_cols;
+      self->windx[i] = self->windx[i-1] + n_cols;
+      self->windy[i] = self->windy[i-1] + n_cols;
     }
 
   }
@@ -87,6 +94,10 @@ storm_free (StormModel *self)
     free (self->wdir);
     free (self->wspd[0]);
     free (self->wspd);
+    free (self->windx[0]);
+    free (self->windx);
+    free (self->windy[0]);
+    free (self->windy);
     free (self);
   }
   return 0;
@@ -98,6 +109,7 @@ storm_advance_time (StormModel *self)
 {
   if (self) {
     storm_compute_wind (self->wdir, self->wspd,
+			self->windx, self->windy,
 			self->shape, self->spacing, self->center,
 			self->sspd, self->sdir,
 			self->pcent, self->pedge,
@@ -112,10 +124,10 @@ storm_advance_time (StormModel *self)
 
 
 int
-storm_compute_wind (double **wdir, double **wspd, int shape[2],
-		    double spacing[2], int center[2], double sspd,
-		    double sdir, double pcent, double pedge,
-		    double rmaxw, double srad, double defcon)
+storm_compute_wind (double **wdir, double **wspd, double **windx, 
+		    double **windy, int shape[2], double spacing[2],
+		    int center[2], double sspd, double sdir, double pcent,
+		    double pedge, double rmaxw, double srad, double defcon)
 {
   int i, j;
   const int nx = shape[0];
@@ -125,6 +137,7 @@ storm_compute_wind (double **wdir, double **wspd, int shape[2],
   const int xc = center[0];
   const int yc = center[1];
   double dxc, dyc, r, wdir_ij, wspd_ij;
+  double *correction;
 
   for (i = 0; i < nx; i++) {
     for (j = 0; j < ny; j++) {
@@ -138,8 +151,11 @@ storm_compute_wind (double **wdir, double **wspd, int shape[2],
 	wdir_ij = gridcell_wdir (i, j, xc, yc, dxc, dyc, r, rmaxw, defcon);
 	wspd_ij = gridcell_wspd (r, pcent, pedge, rmaxw);
       }
+      correction = speed_correction(sspd, sdir, r, rmaxw);
+      windx[i][j] = (wspd_ij * cos (wdir_ij)) + correction[0];
+      windy[i][j] = (wspd_ij * sin (wdir_ij)) + correction[1];
       wdir[i][j] = (wdir_ij * 180.0 / M_PI) - ACOR;
-      wspd[i][j] = wspd_ij;
+      wspd[i][j] = euclidian_norm(windx[i][j], windy[i][j]);
     }
   }
 
@@ -210,4 +226,18 @@ double
 euclidian_norm (double x, double y)
 {
   return sqrt (x*x + y*y);
+}
+
+
+double *
+speed_correction (double sspd, double sdir, double r, double rmaxw)
+{
+  double magnitude;
+  static double correction[2];
+
+  magnitude = sspd * (rmaxw * r / (r*r + rmaxw*rmaxw));
+  correction[0] = magnitude * cos (sdir);
+  correction[1] = magnitude * sin (sdir);
+
+  return correction;
 }
