@@ -19,11 +19,11 @@ add_library (bmi_stormc ${bmi_storm_lib_SRCS} )
 ########### Storm main ###############
 
 set (storm_sources main.c storm.c)
-add_executable (stormc ${storm_sources})
+add_executable (storm ${storm_sources})
 
 ########### Install files ###############
 
-install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/stormc 
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/storm
         DESTINATION bin
 	COMPONENT storm)
 install(TARGETS bmi_stormc 
