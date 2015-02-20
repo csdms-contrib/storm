@@ -40,6 +40,7 @@ extern int storm_compute_wind (double **wdir, double **wspd,
 			       int center[2], double sspd, double sdir,
 			       double pcent, double pedge, double rmaxw,
 			       double srad, double defcon);
+extern int storm_write_output (const char *filename, double **, int shape[2]);
 
 #if defined(__cplusplus)
 }
