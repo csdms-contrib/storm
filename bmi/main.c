@@ -9,6 +9,10 @@ int
 main(int argc, char *argv[]) 
 {
   StormModel *m = NULL;
+  char wdir_file[20];
+  char wspd_file[20];
+  char windx_file[20];
+  char windy_file[20];
 
   if (argc == 1) {
     m = storm_from_default ();
@@ -16,17 +20,27 @@ main(int argc, char *argv[])
     m = storm_from_input_file (argv[1]);
   }
 
-  fprintf (stdout, "dx: %f\n", m->spacing[0]);
-  fprintf (stdout, "dy: %f\n", m->spacing[1]);
-  fprintf (stdout, "sspd: %f\n", m->sspd);
-  fprintf (stdout, "sdir: %f\n", m->sdir);
+  printf ("dx: %f\n", m->spacing[0]);
+  printf ("dy: %f\n", m->spacing[1]);
+  printf ("sspd: %f\n", m->sspd);
+  printf ("sdir: %f\n", m->sdir);
 
-  storm_advance_time (m);
+  while (m->t < m->t_end) {
+    storm_advance_time (m);
 
-  storm_write_output ("wdir.out", m->wdir, m->shape);
-  storm_write_output ("wspd.out", m->wspd, m->shape);
-  storm_write_output ("windx.out", m->windx, m->shape);
-  storm_write_output ("windy.out", m->windy, m->shape);
+    sprintf (wdir_file, "wdir_%03d.out", m->t);
+    storm_write_output (wdir_file, m->wdir, m->shape);
+
+    sprintf (wspd_file, "wspd_%03d.out", m->t);
+    storm_write_output (wspd_file, m->wspd, m->shape);
+
+    sprintf (windx_file, "windx_%03d.out", m->t);
+    storm_write_output (windx_file, m->windx, m->shape);
+
+    sprintf (windy_file, "windy_%03d.out", m->t);
+    storm_write_output (windy_file, m->windy, m->shape);
+  }
+
 
   return 0;
 }
