@@ -16,7 +16,6 @@ storm_from_default (void)
     self->t = 0;
     self->dt = 1;
     self->t_end = 1;
-    self->t_next = 2;
     self->shape[0] = 50;
     self->shape[1] = 25;
     self->spacing[0] = 5000.0;
@@ -47,7 +46,7 @@ storm_from_input_file (const char *filename)
   FILE *fp = NULL;
   char *line = NULL;
   size_t len = 0;
-  int t_end, xsize, ysize, xc, yc, t_next;
+  int t_end, xsize, ysize, xc, yc;
   double dx, dy, sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
 
   fp = fopen (filename, "r");
@@ -58,19 +57,21 @@ storm_from_input_file (const char *filename)
 
   fscanf(fp, "%d %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
   getline(&line, &len, fp);
-
-  fscanf(fp, "%d %d %d", &xc, &yc, &t_next);
   getline(&line, &len, fp);
 
-  fscanf(fp, "%lf %lf %lf %lf %lf %lf %lf",			\
-	 &sspd, &sdir, &pcent, &pedge, &rmaxw, &srad, &defcon);
+  fscanf(fp, "%d %d", &xc, &yc);
+  getline(&line, &len, fp);
+
+  fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
   getline(&line, &len, fp);
   sdir += ACOR;
+
+  fscanf(fp, "%lf %lf %lf", &rmaxw, &srad, &defcon);
+  getline(&line, &len, fp);
 
   self->t = 0;
   self->dt = 1;
   self->t_end = t_end;
-  self->t_next = t_next;
   self->shape[0] = xsize;
   self->shape[1] = ysize;
   self->spacing[0] = dx;

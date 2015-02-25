@@ -1,3 +1,5 @@
-1 7 7 10000.0 10000.0      /LMAX,IM,JM,DX,DY
-3 3 2                      /MCENT,NCENT,LSC
-5.6 180.0 99800.0 101200.0 24400.0 1000000.0 0.0 
+1 50 50 10000.0 10000.0     # t_end, shape(i,j), spacing(x,y)
+
+20 30                       # center(i,j)
+5.6 180.0 99800.0 101200.0  # sspd, sdir, pcent, pedge
+24400.0 1000000.0 0.0       # rmaxw, srad, defcon
