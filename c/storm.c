@@ -16,14 +16,14 @@
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 
 #define ACOR 0.0
-#define RHOA 1.22
-#define F 0.000061618
+#define RHOA 1.22     // air density [kg/m3]
+#define F 0.000061618 // Coriolis parameter [rad/s]
 
 int main(void) {
 
   int lmax;          // maximum number of timesteps over which winds computed
-  int mcent, ncent;  // initial x & y position of storm center
-  int im, jm;        // grid dimensions
+  int mcent, ncent;  // initial (i,j) position of storm center in grid
+  int im, jm;        // grid dimensions [m]
   int i, j, l;       // loop counters
   int i3, i4;        // loop counter limits
   int lsc;           // the next timestep for which data are to be read
