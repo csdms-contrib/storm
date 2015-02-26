@@ -20,6 +20,7 @@ main(int argc, char *argv[])
     m = storm_from_input_file (argv[1]);
   }
 
+  printf ("file: %s\n", m->filename);
   printf ("dx: %f\n", m->spacing[0]);
   printf ("dy: %f\n", m->spacing[1]);
   printf ("sspd: %f\n", m->sspd);

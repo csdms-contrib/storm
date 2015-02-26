@@ -5,6 +5,7 @@
 
 #include "storm.h"
 
+int read_timestep (StormModel *self);
 int initialize_arrays (StormModel *self);
 
 StormModel *
@@ -50,10 +51,12 @@ storm_from_input_file (const char *filename)
   double dx, dy, sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
 
   fp = fopen (filename, "r");
-  if (!fp)
+  if (!fp) {
     return NULL;
-  else
+  } else {
     self = (StormModel *) malloc (sizeof (StormModel));
+    strcpy(self->filename, filename);
+  }
 
   fscanf(fp, "%d %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
   getline(&line, &len, fp);
@@ -89,6 +92,13 @@ storm_from_input_file (const char *filename)
   initialize_arrays (self);
 
   return self;
+}
+
+
+int
+read_timestep (StormModel *self)
+{
+  return 0;
 }
 
 

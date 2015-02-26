@@ -6,27 +6,29 @@ extern "C" {
 #endif
 
 #define ACOR 0.0
-#define RHOA 1.22
-#define F 0.000061618
+#define RHOA 1.22         /* air density [kg/m3] */
+#define F 0.000061618     /* Coriolis parameter [rad/s] */
+#define MAX_LEN 1024
 
 typedef struct {
-  int t;              /* current time step */
-  int dt;             /* time increment */
-  int t_end;          /* last time step */
-  int shape[2];       /* grid dimensions */
-  double spacing[2];  /* grid spacing [m] */
-  int center[2];      /* grid cell of storm center */
-  double sspd;        /* storm speed [m/s] */
-  double sdir;        /* storm direction [deg CCW from east] */
-  double pcent;       /* pressure at storm center [Pa] */
-  double pedge;       /* pressure at storm edge [Pa] */
-  double rmaxw;       /* radius of maximum winds [m] */
-  double srad;        /* storm radius [m] */
+  char filename[MAX_LEN]; /* input file */
+  int t;                  /* current time step */
+  int dt;                 /* time increment */
+  int t_end;              /* last time step */
+  int shape[2];           /* grid dimensions */
+  double spacing[2];      /* grid spacing [m] */
+  int center[2];          /* grid cell of storm center */
+  double sspd;            /* storm speed [m/s] */
+  double sdir;            /* storm direction [deg CCW from east] */
+  double pcent;           /* pressure at storm center [Pa] */
+  double pedge;           /* pressure at storm edge [Pa] */
+  double rmaxw;           /* radius of maximum winds [m] */
+  double srad;            /* storm radius [m] */
   double defcon;
-  double **wdir;      /* wind direction */
-  double **wspd;      /* wind speed */
-  double **windx;     /* x-component of wind */
-  double **windy;     /* y-component of wind */
+  double **wdir;          /* wind direction */
+  double **wspd;          /* wind speed */
+  double **windx;         /* x-component of wind */
+  double **windy;         /* y-component of wind */
 } StormModel;
 
 extern StormModel * storm_from_default (void);
