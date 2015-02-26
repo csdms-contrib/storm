@@ -47,8 +47,8 @@ storm_from_input_file (const char *filename)
   FILE *fp = NULL;
   char *line = NULL;
   size_t len = 0;
-  int t_end, xsize, ysize, xc, yc;
-  double dx, dy, sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
+  int t_end, xsize, ysize;
+  double dx, dy;
 
   fp = fopen (filename, "r");
   if (!fp) {
@@ -60,17 +60,7 @@ storm_from_input_file (const char *filename)
 
   fscanf(fp, "%d %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
   getline(&line, &len, fp);
-  getline(&line, &len, fp);
-
-  fscanf(fp, "%d %d", &xc, &yc);
-  getline(&line, &len, fp);
-
-  fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
-  getline(&line, &len, fp);
-  sdir += ACOR;
-
-  fscanf(fp, "%lf %lf %lf", &rmaxw, &srad, &defcon);
-  getline(&line, &len, fp);
+  fclose(fp);
 
   self->t = 0;
   self->dt = 1;
@@ -79,15 +69,8 @@ storm_from_input_file (const char *filename)
   self->shape[1] = ysize;
   self->spacing[0] = dx;
   self->spacing[1] = dy;
-  self->center[0] = xc;
-  self->center[1] = yc;
-  self->sspd = sspd;
-  self->sdir = sdir * M_PI / 180.0;
-  self->pcent = pcent;
-  self->pedge = pedge;
-  self->rmaxw = rmaxw;
-  self->srad = srad;
-  self->defcon = defcon;
+
+  read_timestep (self);
 
   initialize_arrays (self);
 
@@ -98,6 +81,40 @@ storm_from_input_file (const char *filename)
 int
 read_timestep (StormModel *self)
 {
+  FILE *fp = NULL;
+  char *line = NULL;
+  size_t len = 0;
+  int i, xc, yc;
+  double sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
+
+  fp = fopen (self->filename, "r");
+  if (!fp) {
+    return 1;
+  }
+
+  /* Skip to timestep */
+  getline(&line, &len, fp);
+  getline(&line, &len, fp);
+
+  fscanf(fp, "%d %d", &xc, &yc);
+  getline(&line, &len, fp);
+  fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
+  getline(&line, &len, fp);
+  fscanf(fp, "%lf %lf %lf", &rmaxw, &srad, &defcon);
+  getline(&line, &len, fp);
+
+  fclose(fp);
+
+  self->center[0] = xc;
+  self->center[1] = yc;
+  self->sspd = sspd;
+  self->sdir = (sdir + ACOR) * M_PI / 180.0;
+  self->pcent = pcent;
+  self->pedge = pedge;
+  self->rmaxw = rmaxw;
+  self->srad = srad;
+  self->defcon = defcon;
+
   return 0;
 }
 

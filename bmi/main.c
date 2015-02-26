@@ -22,14 +22,16 @@ main(int argc, char *argv[])
     m = storm_from_input_file (argv[1]);
   }
 
-  printf ("file: %s\n", m->filename);
-  printf ("dx: %f\n", m->spacing[0]);
-  printf ("dy: %f\n", m->spacing[1]);
-  printf ("sspd: %f\n", m->sspd);
-  printf ("sdir: %f\n", m->sdir);
+  printf ("** Running storm **\n");
+  printf ("Input file: %s\n", m->filename);
+  /* printf ("dx: %f\n", m->spacing[0]); */
+  /* printf ("dy: %f\n", m->spacing[1]); */
+  /* printf ("sspd: %f\n", m->sspd); */
+  /* printf ("sdir: %f\n", m->sdir); */
 
   while (m->t < m->t_end) {
     storm_advance_time (m);
+    printf ("Timestep: %d\n", m->t);
 
     sprintf (wdir_file, "wdir_%03d.out", m->t);
     sprintf (wspd_file, "wspd_%03d.out", m->t);
@@ -41,7 +43,7 @@ main(int argc, char *argv[])
     storm_write_output (windx_file, m->windx, m->shape);
     storm_write_output (windy_file, m->windy, m->shape);
   }
-
+  printf ("Done!\n");
 
   return 0;
 }
