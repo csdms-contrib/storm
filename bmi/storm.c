@@ -35,6 +35,7 @@ storm_from_default (void)
     return NULL;
 
   initialize_arrays (self);
+  storm_compute_wind (self);
 
   return self;
 }
@@ -71,8 +72,8 @@ storm_from_input_file (const char *filename)
   self->spacing[1] = dy;
 
   read_timestep (self);
-
   initialize_arrays (self);
+  storm_compute_wind (self);
 
   return self;
 }
@@ -92,8 +93,6 @@ read_timestep (StormModel *self)
     return 1;
   }
 
-  /* Skip to timestep */
-  getline(&line, &len, fp);
   /* Skip to timestep in file */
   getline(&line, &len, fp);
   for (i = 0; i < 4*self->t; i++) {
@@ -181,15 +180,28 @@ storm_free (StormModel *self)
 
 
 int
+storm_compute_wind (StormModel *self)
+{
+  if (self) {
+    compute_wind (self->wdir, self->wspd,
+		  self->windx, self->windy,
+		  self->shape, self->spacing, self->center,
+		  self->sspd, self->sdir,
+		  self->pcent, self->pedge,
+		  self->rmaxw, self->srad, self->defcon);
+  }
+  else
+    return 1;
+
+  return 0;
+}
+
+
+int
 storm_advance_time (StormModel *self)
 {
   if (self) {
-    storm_compute_wind (self->wdir, self->wspd,
-			self->windx, self->windy,
-			self->shape, self->spacing, self->center,
-			self->sspd, self->sdir,
-			self->pcent, self->pedge,
-			self->rmaxw, self->srad, self->defcon);
+    storm_compute_wind (self);
     self->t += self->dt;
     read_timestep (self);
   }

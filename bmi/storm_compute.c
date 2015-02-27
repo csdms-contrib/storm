@@ -14,10 +14,10 @@ double euclidian_norm (double x, double y);
 double * speed_correction (double sspd, double sdir, double r, double rmaxw);
 
 int
-storm_compute_wind (double **wdir, double **wspd, double **windx, 
-		    double **windy, int shape[2], double spacing[2],
-		    int center[2], double sspd, double sdir, double pcent,
-		    double pedge, double rmaxw, double srad, double defcon)
+compute_wind (double **wdir, double **wspd, double **windx, double **windy, 
+	      int shape[2], double spacing[2], int center[2], double sspd, 
+	      double sdir, double pcent, double pedge, double rmaxw, 
+	      double srad, double defcon)
 {
   int i, j;
   const int nx = shape[0];
