@@ -5,16 +5,14 @@
 
 #include "storm.h"
 
-#define FNAME_LENGTH 20
-
 int
 main(int argc, char *argv[]) 
 {
   StormModel *m = NULL;
-  char wdir_file[FNAME_LENGTH];
-  char wspd_file[FNAME_LENGTH];
-  char windx_file[FNAME_LENGTH];
-  char windy_file[FNAME_LENGTH];
+  char wdir_file[MAX_LEN];
+  char wspd_file[MAX_LEN];
+  char windx_file[MAX_LEN];
+  char windy_file[MAX_LEN];
 
   if (argc == 1) {
     m = storm_from_default ();
@@ -24,13 +22,8 @@ main(int argc, char *argv[])
 
   printf ("** Running storm **\n");
   printf ("Input file: %s\n", m->filename);
-  /* printf ("dx: %f\n", m->spacing[0]); */
-  /* printf ("dy: %f\n", m->spacing[1]); */
-  /* printf ("sspd: %f\n", m->sspd); */
-  /* printf ("sdir: %f\n", m->sdir); */
 
   while (m->t < m->t_end) {
-    storm_advance_time (m);
     printf ("Timestep: %d\n", m->t);
 
     sprintf (wdir_file, "wdir_%03d.out", m->t);
@@ -42,6 +35,8 @@ main(int argc, char *argv[])
     storm_write_output (wspd_file, m->wspd, m->shape);
     storm_write_output (windx_file, m->windx, m->shape);
     storm_write_output (windy_file, m->windy, m->shape);
+
+    storm_advance_time (m);
   }
   printf ("Done!\n");
 

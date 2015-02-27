@@ -94,7 +94,11 @@ read_timestep (StormModel *self)
 
   /* Skip to timestep */
   getline(&line, &len, fp);
+  /* Skip to timestep in file */
   getline(&line, &len, fp);
+  for (i = 0; i < 4*self->t; i++) {
+    getline(&line, &len, fp);
+  }
 
   fscanf(fp, "%d %d", &xc, &yc);
   getline(&line, &len, fp);
@@ -187,6 +191,7 @@ storm_advance_time (StormModel *self)
 			self->pcent, self->pedge,
 			self->rmaxw, self->srad, self->defcon);
     self->t += self->dt;
+    read_timestep (self);
   }
   else
     return 1;
