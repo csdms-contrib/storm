@@ -1,0 +1,41 @@
+10 50 50 10000.0 10000.0    # t_end, shape(i,j), spacing(x,y)
+
+30 30                       # center(i,j)
+5.6 180.0 99800.0 101200.0  # sspd, sdir, pcent, pedge
+24400.0 1000000.0 0.0       # rmaxw, srad, defcon
+
+30 29                       # center(i,j)
+6.0 180.0 99000.0 101200.0  # sspd, sdir, pcent, pedge
+25500.0 1050000.0 0.0       # rmaxw, srad, defcon
+
+30 28                       # center(i,j)
+6.4 170.0 98000.0 101200.0  # sspd, sdir, pcent, pedge
+26000.0 1100000.0 0.0       # rmaxw, srad, defcon
+
+29 26                       # center(i,j)
+6.8 150.0 96000.0 101200.0  # sspd, sdir, pcent, pedge
+27000.0 1200000.0 0.0       # rmaxw, srad, defcon
+
+27 24                       # center(i,j)
+7.2 120.0 92000.0 101200.0  # sspd, sdir, pcent, pedge
+29000.0 1400000.0 0.0       # rmaxw, srad, defcon
+
+25 23                       # center(i,j)
+6.8 90.0 93000.0 101200.0   # sspd, sdir, pcent, pedge
+27500.0 1300000.0 0.0       # rmaxw, srad, defcon
+
+22 23                       # center(i,j)
+6.4 80.0 95000.0 101200.0   # sspd, sdir, pcent, pedge
+26000.0 1200000.0 0.0       # rmaxw, srad, defcon
+
+20 24                       # center(i,j)
+6.0 70.0 97000.0 101200.0   # sspd, sdir, pcent, pedge
+25000.0 1100000.0 0.0       # rmaxw, srad, defcon
+
+19 25                       # center(i,j)
+5.6 60.0 98000.0 101200.0   # sspd, sdir, pcent, pedge
+24500.0 1050000.0 0.0       # rmaxw, srad, defcon
+
+18 27                       # center(i,j)
+5.2 50.0 99000.0 101200.0   # sspd, sdir, pcent, pedge
+24000.0 1000000.0 0.0       # rmaxw, srad, defcon
