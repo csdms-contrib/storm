@@ -36,11 +36,11 @@ extern StormModel * storm_from_default (void);
 extern StormModel * storm_from_input_file (const char *filename);
 extern int storm_free (StormModel *self);
 extern int storm_advance_time (StormModel *self);
-extern int storm_compute_wind (StormModel *self);
-extern int compute_wind (double **wdir, double **wspd, double **windx, double **windy,
-			 int shape[2], double spacing[2], int center[2], 
-			 double sspd, double sdir, double pcent, double pedge, 
-			 double rmaxw, double srad, double defcon);
+extern int compute_wind (double **wdir, double **wspd, double **windx,
+			 double **windy, int shape[2], double spacing[2],
+			 int center[2], double sspd, double sdir,
+			 double pcent, double pedge, double rmaxw,
+			 double srad, double defcon);
 extern int storm_write_output (const char *filename, double **, int shape[2]);
 
 #if defined(__cplusplus)

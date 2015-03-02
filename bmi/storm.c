@@ -5,8 +5,9 @@
 
 #include "storm.h"
 
-int read_timestep (StormModel *self);
 int initialize_arrays (StormModel *self);
+int read_timestep (StormModel *self);
+
 
 StormModel *
 storm_from_default (void)
@@ -35,7 +36,6 @@ storm_from_default (void)
     return NULL;
 
   initialize_arrays (self);
-  storm_compute_wind (self);
 
   return self;
 }
@@ -71,54 +71,9 @@ storm_from_input_file (const char *filename)
   self->spacing[0] = dx;
   self->spacing[1] = dy;
 
-  read_timestep (self);
   initialize_arrays (self);
-  storm_compute_wind (self);
 
   return self;
-}
-
-
-int
-read_timestep (StormModel *self)
-{
-  FILE *fp = NULL;
-  char *line = NULL;
-  size_t len = 0;
-  int i, xc, yc;
-  double sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
-
-  fp = fopen (self->filename, "r");
-  if (!fp) {
-    return 1;
-  }
-
-  /* Skip to timestep in file */
-  getline(&line, &len, fp);
-  for (i = 0; i < 4*self->t; i++) {
-    getline(&line, &len, fp);
-  }
-
-  fscanf(fp, "%d %d", &xc, &yc);
-  getline(&line, &len, fp);
-  fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
-  getline(&line, &len, fp);
-  fscanf(fp, "%lf %lf %lf", &rmaxw, &srad, &defcon);
-  getline(&line, &len, fp);
-
-  fclose(fp);
-
-  self->center[0] = xc;
-  self->center[1] = yc;
-  self->sspd = sspd;
-  self->sdir = (sdir + ACOR) * M_PI / 180.0;
-  self->pcent = pcent;
-  self->pedge = pedge;
-  self->rmaxw = rmaxw;
-  self->srad = srad;
-  self->defcon = defcon;
-
-  return 0;
 }
 
 
@@ -180,15 +135,17 @@ storm_free (StormModel *self)
 
 
 int
-storm_compute_wind (StormModel *self)
+storm_advance_time (StormModel *self)
 {
   if (self) {
+    read_timestep (self);
     compute_wind (self->wdir, self->wspd,
 		  self->windx, self->windy,
 		  self->shape, self->spacing, self->center,
 		  self->sspd, self->sdir,
 		  self->pcent, self->pedge,
 		  self->rmaxw, self->srad, self->defcon);
+    self->t += self->dt;
   }
   else
     return 1;
@@ -198,15 +155,43 @@ storm_compute_wind (StormModel *self)
 
 
 int
-storm_advance_time (StormModel *self)
+read_timestep (StormModel *self)
 {
-  if (self) {
-    storm_compute_wind (self);
-    self->t += self->dt;
-    read_timestep (self);
-  }
-  else
+  FILE *fp = NULL;
+  char *line = NULL;
+  size_t len = 0;
+  int i, xc, yc;
+  double sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
+
+  fp = fopen (self->filename, "r");
+  if (!fp) {
     return 1;
+  }
+
+  /* Skip to timestep in file */
+  getline(&line, &len, fp);
+  for (i = 0; i < 4*self->t; i++) {
+    getline(&line, &len, fp);
+  }
+
+  fscanf(fp, "%d %d", &xc, &yc);
+  getline(&line, &len, fp);
+  fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
+  getline(&line, &len, fp);
+  fscanf(fp, "%lf %lf %lf", &rmaxw, &srad, &defcon);
+  getline(&line, &len, fp);
+
+  fclose(fp);
+
+  self->center[0] = xc;
+  self->center[1] = yc;
+  self->sspd = sspd;
+  self->sdir = (sdir + ACOR) * M_PI / 180.0;
+  self->pcent = pcent;
+  self->pedge = pedge;
+  self->rmaxw = rmaxw;
+  self->srad = srad;
+  self->defcon = defcon;
 
   return 0;
 }
