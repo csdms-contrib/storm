@@ -25,7 +25,7 @@ storm_from_default (void)
     self->center[0] = 24;
     self->center[1] = 12;
     self->sspd = 5.0;
-    self->sdir = 210.0 * M_PI / 180.0;
+    self->sdir = 210.0 * PI / 180.0;
     self->pcent = 99000.0;
     self->pedge = 101500.0;
     self->rmaxw = 65000.0;
@@ -186,7 +186,7 @@ read_timestep (StormModel *self)
   self->center[0] = xc;
   self->center[1] = yc;
   self->sspd = sspd;
-  self->sdir = (sdir + ACOR) * M_PI / 180.0;
+  self->sdir = (sdir + ACOR) * PI / 180.0;
   self->pcent = pcent;
   self->pedge = pedge;
   self->rmaxw = rmaxw;

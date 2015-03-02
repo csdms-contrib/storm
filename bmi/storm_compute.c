@@ -44,7 +44,7 @@ compute_wind (double **wdir, double **wspd, double **windx, double **windy,
       sspd_corr = speed_correction (sspd, sdir, r, rmaxw);
       windx[i][j] = (wspd_ij * cos (wdir_ij)) + sspd_corr[0];
       windy[i][j] = (wspd_ij * sin (wdir_ij)) + sspd_corr[1];
-      wdir[i][j] = (wdir_ij * 180.0 / M_PI) - ACOR;
+      wdir[i][j] = (wdir_ij * 180.0 / PI) - ACOR;
       wspd[i][j] = euclidian_norm (windx[i][j], windy[i][j]);
     }
   }
@@ -60,29 +60,29 @@ gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
 
   if (j > yc) {
     if (i > xc) {
-      _wdir = atan (dyc / dxc) + (M_PI / 2.0);
+      _wdir = atan (dyc / dxc) + (PI / 2.0);
     } else if (i < xc) {
-      _wdir = atan (dxc / dyc) + M_PI;
+      _wdir = atan (dxc / dyc) + PI;
     } else {
-      _wdir = M_PI;
+      _wdir = PI;
     }
   } else if (j < yc) {
     if (i > xc) {
       _wdir = atan (dxc / dyc);
     } else if (i < xc) {
-      _wdir = atan (dyc / dxc) + (1.5 * M_PI);
+      _wdir = atan (dyc / dxc) + (1.5 * PI);
     } else {
       _wdir = 0.0;
     }
   } else {
     if (i < xc) {
-      _wdir = 1.5 * M_PI;
+      _wdir = 1.5 * PI;
     } else {
-      _wdir = M_PI / 2.0;
+      _wdir = PI / 2.0;
     }
   }
 
-  _wdir += defcon * (r / rmaxw) * (M_PI / 180.0);
+  _wdir += defcon * (r / rmaxw) * (PI / 180.0);
 
   return _wdir;
 }
