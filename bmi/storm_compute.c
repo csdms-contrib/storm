@@ -60,7 +60,7 @@ gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
 
   if (j > yc) {
     if (i > xc) {
-      _wdir = atan (dyc / dxc) + M_PI_2;
+      _wdir = atan (dyc / dxc) + (M_PI / 2.0);
     } else if (i < xc) {
       _wdir = atan (dxc / dyc) + M_PI;
     } else {
@@ -78,7 +78,7 @@ gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
     if (i < xc) {
       _wdir = 1.5 * M_PI;
     } else {
-      _wdir = M_PI_2;
+      _wdir = M_PI / 2.0;
     }
   }
 

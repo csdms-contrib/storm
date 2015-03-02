@@ -9,6 +9,7 @@ extern "C" {
 #define RHOA 1.22         /* air density [kg/m3] */
 #define F 0.000061618     /* Coriolis parameter [rad/s] */
 #define MAX_LEN 1024
+#define M_PI 3.14159265358979323846264338327
 
 typedef struct {
   char filename[MAX_LEN]; /* input file */

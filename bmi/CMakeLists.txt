@@ -10,7 +10,6 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/stormc.pc.cmake
 set (BUILD_SHARED_LIBS ON)
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/.. )
-
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 set (bmi_storm_lib_SRCS bmi_storm.c storm.c storm_compute.c)
@@ -20,6 +19,7 @@ add_library (bmi_stormc ${bmi_storm_lib_SRCS} )
 
 set (storm_sources main.c storm.c storm_compute.c storm_output.c)
 add_executable (storm ${storm_sources})
+target_link_libraries (storm m)
 
 ########### Install files ###############
 
