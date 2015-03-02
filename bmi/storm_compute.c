@@ -5,13 +5,14 @@
 
 #include "storm.h"
 
-double gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
-		      double r, double rmaxw, double defcon);
-double gridcell_wspd (double r, double pcent, double pedge, double rmaxw);
-double xdistance_from_center (int i, double dx, int xc);
-double ydistance_from_center (int j, double dy, int yc);
-double euclidian_norm (double x, double y);
-double * speed_correction (double sspd, double sdir, double r, double rmaxw);
+static double gridcell_wdir (int i, int j, int xc, int yc, double dxc,
+			     double dyc, double r, double rmaxw, double defcon);
+static double gridcell_wspd (double r, double pcent, double pedge, double rmaxw);
+static double xdistance_from_center (int i, double dx, int xc);
+static double ydistance_from_center (int j, double dy, int yc);
+static double euclidian_norm (double x, double y);
+static double * speed_correction (double sspd, double sdir, double r,
+				  double rmaxw);
 
 int
 compute_wind (double **wdir, double **wspd, double **windx, double **windy, 
@@ -52,7 +53,7 @@ compute_wind (double **wdir, double **wspd, double **windx, double **windy,
   return 0;
 }
 
-double
+static double
 gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
 	       double r, double rmaxw, double defcon)
 {
@@ -88,7 +89,7 @@ gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
 }
 
 
-double
+static double
 gridcell_wspd (double r, double pcent, double pedge, double rmaxw)
 {
   double cc;
@@ -98,28 +99,28 @@ gridcell_wspd (double r, double pcent, double pedge, double rmaxw)
 }
 
 
-double
+static double
 xdistance_from_center (int i, double dx, int xc)
 {
   return fabs ((i - xc) * dx);
 }
 
 
-double
+static double
 ydistance_from_center (int j, double dy, int yc)
 {
   return fabs ((j - yc) * dy);
 }
 
 
-double
+static double
 euclidian_norm (double x, double y)
 {
   return sqrt (x*x + y*y);
 }
 
 
-double *
+static double *
 speed_correction (double sspd, double sdir, double r, double rmaxw)
 {
   double magnitude;
