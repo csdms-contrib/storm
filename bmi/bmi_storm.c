@@ -136,7 +136,7 @@ Finalize (void *self)
 
 
 BMI_Model *
-Construct_heat_bmi(BMI_Model *model)
+Construct_storm_bmi(BMI_Model *model)
 {
   if (model) {
     model->self = NULL;
@@ -146,7 +146,7 @@ Construct_heat_bmi(BMI_Model *model)
     model->update_until = Update_until;
     model->update_frac = Update_frac;
     model->finalize = Finalize;
-    /* model->run_model = NULL; */
+    model->run_model = NULL;
 
     /* model->get_component_name = Get_component_name; */
     /* model->get_input_var_name_count = Get_input_var_name_count; */

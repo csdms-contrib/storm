@@ -30,7 +30,6 @@ storm_from_default (void)
     self->pedge = 101500.0;
     self->rmaxw = 65000.0;
     self->srad = 3000000.0;
-    self->defcon = 0.0;
   }
   else
     return NULL;
@@ -144,7 +143,7 @@ storm_advance_time (StormModel *self)
 		  self->shape, self->spacing, self->center,
 		  self->sspd, self->sdir,
 		  self->pcent, self->pedge,
-		  self->rmaxw, self->srad, self->defcon);
+		  self->rmaxw, self->srad);
     self->t += self->dt;
   }
   else
@@ -161,7 +160,7 @@ read_timestep (StormModel *self)
   char *line = NULL;
   size_t len = 0;
   int i, xc, yc;
-  double sspd, sdir, pcent, pedge, rmaxw, srad, defcon;
+  double sspd, sdir, pcent, pedge, rmaxw, srad;
 
   fp = fopen (self->filename, "r");
   if (!fp) {
@@ -178,7 +177,7 @@ read_timestep (StormModel *self)
   getline(&line, &len, fp);
   fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
   getline(&line, &len, fp);
-  fscanf(fp, "%lf %lf %lf", &rmaxw, &srad, &defcon);
+  fscanf(fp, "%lf %lf", &rmaxw, &srad);
   getline(&line, &len, fp);
 
   fclose(fp);
@@ -191,7 +190,6 @@ read_timestep (StormModel *self)
   self->pedge = pedge;
   self->rmaxw = rmaxw;
   self->srad = srad;
-  self->defcon = defcon;
 
   return 0;
 }

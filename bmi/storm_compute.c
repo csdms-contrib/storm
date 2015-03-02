@@ -6,7 +6,7 @@
 #include "storm.h"
 
 static double gridcell_wdir (int i, int j, int xc, int yc, double dxc,
-			     double dyc, double r, double rmaxw, double defcon);
+			     double dyc, double r, double rmaxw);
 static double gridcell_wspd (double r, double pcent, double pedge, double rmaxw);
 static double xdistance_from_center (int i, double dx, int xc);
 static double ydistance_from_center (int j, double dy, int yc);
@@ -14,11 +14,11 @@ static double euclidian_norm (double x, double y);
 static double * speed_correction (double sspd, double sdir, double r,
 				  double rmaxw);
 
+
 int
 compute_wind (double **wdir, double **wspd, double **windx, double **windy, 
 	      int shape[2], double spacing[2], int center[2], double sspd, 
-	      double sdir, double pcent, double pedge, double rmaxw, 
-	      double srad, double defcon)
+	      double sdir, double pcent, double pedge, double rmaxw, double srad)
 {
   int i, j;
   const int nx = shape[0];
@@ -39,7 +39,7 @@ compute_wind (double **wdir, double **wspd, double **windx, double **windy,
 	dxc = xdistance_from_center (i, dx, xc);
 	dyc = ydistance_from_center (j, dy, yc);
 	r = euclidian_norm (dxc, dyc);
-	wdir_ij = gridcell_wdir (i, j, xc, yc, dxc, dyc, r, rmaxw, defcon);
+	wdir_ij = gridcell_wdir (i, j, xc, yc, dxc, dyc, r, rmaxw);
 	wspd_ij = gridcell_wspd (r, pcent, pedge, rmaxw);
       }
       sspd_corr = speed_correction (sspd, sdir, r, rmaxw);
@@ -55,7 +55,7 @@ compute_wind (double **wdir, double **wspd, double **windx, double **windy,
 
 static double
 gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
-	       double r, double rmaxw, double defcon)
+	       double r, double rmaxw)
 {
   double _wdir;
 
@@ -83,7 +83,7 @@ gridcell_wdir (int i, int j, int xc, int yc, double dxc, double dyc,
     }
   }
 
-  _wdir += defcon * (r / rmaxw) * (PI / 180.0);
+  /* _wdir += defcon * (r / rmaxw) * (PI / 180.0); */
 
   return _wdir;
 }

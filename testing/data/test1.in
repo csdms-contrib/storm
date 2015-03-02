@@ -2,4 +2,4 @@
 
 30 30                       # center(i,j)
 5.6 180.0 99800.0 101200.0  # sspd, sdir, pcent, pedge
-24400.0 1000000.0 0.0       # rmaxw, srad, defcon
+24400.0 1000000.0           # rmaxw, srad

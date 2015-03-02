@@ -25,7 +25,6 @@ typedef struct {
   double pedge;           /* pressure at storm edge [Pa] */
   double rmaxw;           /* radius of maximum winds [m] */
   double srad;            /* storm radius [m] */
-  double defcon;
   double **wdir;          /* wind direction */
   double **wspd;          /* wind speed */
   double **windx;         /* x-component of wind */
@@ -38,9 +37,8 @@ extern int storm_free (StormModel *self);
 extern int storm_advance_time (StormModel *self);
 extern int compute_wind (double **wdir, double **wspd, double **windx,
 			 double **windy, int shape[2], double spacing[2],
-			 int center[2], double sspd, double sdir,
-			 double pcent, double pedge, double rmaxw,
-			 double srad, double defcon);
+			 int center[2], double sspd, double sdir, double pcent,
+			 double pedge, double rmaxw, double srad);
 extern int storm_write_output (const char *filename, double **, int shape[2]);
 
 #if defined(__cplusplus)
