@@ -202,16 +202,16 @@ static int
 Get_var_units (void *self, const char *name, char *units)
 {
   if (strcmp (name, "model_grid_cell__row_index") == 0) {
-    strncpy(units, "count", BMI_MAX_UNITS_NAME); /* TODO: check this */
+    strncpy(units, "count", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
-    strncpy(units, "count", BMI_MAX_UNITS_NAME); /* TODO: check this */
+    strncpy(units, "count", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
     strncpy(units, "meters second-1", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
-    strncpy(units, "degrees", BMI_MAX_UNITS_NAME); /* TODO: check this */
+    strncpy(units, "degrees", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
     strncpy(units, "pascal", BMI_MAX_UNITS_NAME);
@@ -328,7 +328,7 @@ Get_var_nbytes (void *self, const char *name, int *nbytes)
     if (status == BMI_FAILURE)
       return status;
 
-    status = Get_var_type (self, name, &type);
+    status = Get_var_type (self, name, type);
     if (status == BMI_FAILURE)
       return status;
 
