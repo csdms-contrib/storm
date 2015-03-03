@@ -45,8 +45,7 @@ storm_from_input_file (const char *filename)
 {
   StormModel *self = NULL;
   FILE *fp = NULL;
-  char *line = NULL;
-  size_t len = 0;
+  char line[MAX_LEN];
   int t_end, xsize, ysize;
   double dx, dy;
 
@@ -59,7 +58,7 @@ storm_from_input_file (const char *filename)
   }
 
   fscanf(fp, "%d %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
-  getline(&line, &len, fp);
+  fgets(line, MAX_LEN, fp);
   fclose(fp);
 
   self->t = 0;
@@ -157,8 +156,7 @@ int
 read_timestep (StormModel *self)
 {
   FILE *fp = NULL;
-  char *line = NULL;
-  size_t len = 0;
+  char line[MAX_LEN];
   int i, xc, yc;
   double sspd, sdir, pcent, pedge, rmaxw, srad;
 
@@ -168,17 +166,17 @@ read_timestep (StormModel *self)
   }
 
   /* Skip to timestep in file */
-  getline(&line, &len, fp);
+  fgets(line, MAX_LEN, fp);
   for (i = 0; i < 4*self->t; i++) {
-    getline(&line, &len, fp);
+    fgets(line, MAX_LEN, fp);
   }
 
   fscanf(fp, "%d %d", &xc, &yc);
-  getline(&line, &len, fp);
+  fgets(line, MAX_LEN, fp);
   fscanf(fp, "%lf %lf %lf %lf", &sspd, &sdir, &pcent, &pedge);
-  getline(&line, &len, fp);
+  fgets(line, MAX_LEN, fp);
   fscanf(fp, "%lf %lf", &rmaxw, &srad);
-  getline(&line, &len, fp);
+  fgets(line, MAX_LEN, fp);
 
   fclose(fp);
 
