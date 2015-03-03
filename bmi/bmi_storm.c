@@ -502,10 +502,62 @@ Get_value_at_indices (void *self, const char *name, void *dest,
       /* Copy the data */
       int i;
       int offset;
-      void * ptr;
+      void *ptr;
       for (i=0, ptr=dest; i<len; i++, ptr+=itemsize) {
 	offset = inds[i] * itemsize;
 	memcpy (ptr, src + offset, itemsize);
+      }
+    }
+  }
+
+  return status;
+}
+
+
+static int
+Set_value (void *self, const char *name, void *array)
+{
+  int status = BMI_SUCCESS;
+  void *dest = NULL;
+  int nbytes = 0;
+
+  status = Get_value_ptr (self, name, &dest);
+  if (status == BMI_FAILURE)
+    return status;
+
+  status = Get_var_nbytes (self, name, &nbytes);
+  if (status == BMI_FAILURE)
+    return status;
+
+  memcpy (dest, array, nbytes);
+
+  return status;
+}
+
+
+static int
+Set_value_at_indices (void *self, const char *name, int *inds,
+		      int len, void *src)
+{
+  int status = BMI_SUCCESS;
+  void *to = NULL;
+  const int itemsize = sizeof(double);
+
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+
+    status = Get_value_ptr (self, name, &to);
+    if (status == BMI_FAILURE)
+      return status;
+
+    {
+      /* Copy the data */
+      int i;
+      int offset;
+      void *ptr;
+      for (i=0, ptr=src; i<len; i++, ptr+=itemsize) {
+	offset = inds[i] * itemsize;
+	memcpy (to + offset, ptr, itemsize);
       }
     }
   }
@@ -594,18 +646,18 @@ Construct_storm_bmi(BMI_Model *model)
     model->get_value_ptr = Get_value_ptr;
     model->get_value_at_indices = Get_value_at_indices;
 
-    /* model->set_value = Set_value; */
-    /* model->set_value_ptr = NULL; */
-    /* model->set_value_at_indices = Set_value_at_indices; */
+    model->set_value = Set_value;
+    model->set_value_ptr = NULL;
+    model->set_value_at_indices = Set_value_at_indices;
 
     model->get_grid_type = Get_grid_type;
     model->get_grid_shape = Get_grid_shape;
     model->get_grid_spacing = Get_grid_spacing;
     model->get_grid_origin = Get_grid_origin;
 
-    /* model->get_grid_x = NULL; */
-    /* model->get_grid_y = NULL; */
-    /* model->get_grid_z = NULL; */
+    model->get_grid_x = NULL;
+    model->get_grid_y = NULL;
+    model->get_grid_z = NULL;
   }
 
   return model;
