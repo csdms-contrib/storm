@@ -27,7 +27,8 @@ compute_wind (double **wdir, double **wspd, double **windx, double **windy,
   const double dy = spacing[1];
   const int xc = center[0];
   const int yc = center[1];
-  double dxc, dyc, r, wdir_ij, wspd_ij;
+  double dxc, dyc, wdir_ij, wspd_ij;
+  double r = 0.0;
   double *sspd_corr;
 
   for (i = 0; i < nx; i++) {
