@@ -31,20 +31,15 @@ static const char *output_var_names[OUTPUT_VAR_NAME_COUNT] = {
 
 
 static int
-Get_start_time (void *self, double * time)
+Get_start_time (void *self, double *time)
 {
-  if (time) {
-    *time = 0.;
-    return BMI_SUCCESS;
-  }
-  else {
-    return BMI_FAILURE;
-  }
+  *time = 0.;
+  return BMI_SUCCESS;
 }
 
 
 static int
-Get_end_time (void *self, double * time)
+Get_end_time (void *self, double *time)
 {
   *time = ((StormModel *)self)->t_end;
   return BMI_SUCCESS;
@@ -52,7 +47,7 @@ Get_end_time (void *self, double * time)
 
 
 static int
-Get_time_step (void *self, double * dt)
+Get_time_step (void *self, double *dt)
 {
   *dt = ((StormModel *)self)->dt;
   return BMI_SUCCESS;
@@ -60,7 +55,7 @@ Get_time_step (void *self, double * dt)
 
 
 static int
-Get_time_units (void *self, char * units)
+Get_time_units (void *self, char *units)
 {
   strncpy (units, "-", BMI_MAX_UNITS_NAME);
   return BMI_SUCCESS;
@@ -68,7 +63,7 @@ Get_time_units (void *self, char * units)
 
 
 static int
-Get_current_time (void *self, double * time)
+Get_current_time (void *self, double *time)
 {
   *time = ((StormModel *)self)->t;
   return BMI_SUCCESS;
@@ -98,7 +93,6 @@ static int
 Update (void *self)
 {
   storm_advance_time ((StormModel *) self);
-
   return BMI_SUCCESS;
 }
 
@@ -106,15 +100,11 @@ Update (void *self)
 static int
 Update_frac (void *self, double f)
 {
-  if (f>0) {
-    double dt;
-
+  double dt;
+  if (f > 0) {
     Get_time_step (self, &dt);
-
     ((StormModel *)self)->dt = f * dt;
-
     Update (self);
-
     ((StormModel *)self)->dt = dt;
   }
 
@@ -125,22 +115,19 @@ Update_frac (void *self, double f)
 static int
 Update_until (void *self, double t)
 {
+  double dt;
+  double now;
+
+  Get_time_step (self, &dt);
+  Get_current_time (self, &now);
+
   {
-    double dt;
-    double now;
-
-    Get_time_step (self, &dt);
-    Get_current_time (self, &now);
-
-    {
-      int n;
-      const double n_steps = (t - now) / dt;
-      for (n=0; n<(int)n_steps; n++) {
-        Update (self);
-      }
-
-      Update_frac (self, n_steps - (int)n_steps);
+    int n;
+    const double n_steps = (t - now) / dt;
+    for (n=0; n<(int)n_steps; n++) {
+      Update (self);
     }
+    Update_frac (self, n_steps - (int)n_steps);
   }
 
   return BMI_SUCCESS;
@@ -150,9 +137,7 @@ Update_until (void *self, double t)
 static int
 Finalize (void *self)
 {
-  if (self)
-    storm_free (self);
-
+  storm_free (self);
   return BMI_SUCCESS;
 }
 
