@@ -13,5 +13,5 @@ on the CSDMS wiki.
 Compile and run this program with a sample input file:
 
 	$ make
-	$ cp ../testing/data/wind.in .
+	$ cp testing/data/wind.in .
 	$ ./storm
