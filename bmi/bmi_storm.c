@@ -8,6 +8,28 @@
 #include "storm.h"
 
 
+#define INPUT_VAR_NAME_COUNT 8
+#define OUTPUT_VAR_NAME_COUNT 2
+
+
+static const char *input_var_names[INPUT_VAR_NAME_COUNT] = {
+  "model_grid_cell__row_index",                 /* center[0] */
+  "model_grid_cell__column_index",              /* center[1] */
+  "cyclone__magnitude_of_velocity",             /* sspd */
+  "cyclone__azimuth_angle_of_velocity",         /* sdir */
+  "atmosphere_bottom_air__pressure",            /* pcent */
+  "atmosphere_bottom_air__reference_pressure",  /* pedge */
+  "cyclone_air_flow_max_speed__radius",         /* rmaxw */
+  "cyclone__radius"                             /* srad */
+};
+
+
+static const char *output_var_names[OUTPUT_VAR_NAME_COUNT] = {
+  "atmosphere_air_flow__east_component_of_velocity", /* windx */
+  "atmosphere_air_flow__north_component_of_velocity" /* windy */
+};
+
+
 static int
 Get_start_time (void *self, double * time)
 {
@@ -135,6 +157,93 @@ Finalize (void *self)
 }
 
 
+static int
+Get_var_type (void *self, const char *name, char *type)
+{
+  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    strncpy(type, "int", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    strncpy(type, "int", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
+    strncpy(type, "double", MAX_LEN);
+    return BMI_SUCCESS;
+  }
+  else {
+    type[0] = '\0';
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
+Get_input_var_name_count (void *self, int *count)
+{
+  *count = INPUT_VAR_NAME_COUNT;
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_output_var_name_count (void *self, int *count)
+{
+  *count = OUTPUT_VAR_NAME_COUNT;
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_input_var_names (void *self, char **names)
+{
+  int i;
+  for (i=0; i<INPUT_VAR_NAME_COUNT; i++) {
+    strncpy (names[i], input_var_names[i], BMI_MAX_VAR_NAME);
+  }
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_output_var_names (void *self, char **names)
+{
+  int i;
+  for (i=0; i<OUTPUT_VAR_NAME_COUNT; i++) {
+    strncpy (names[i], output_var_names[i], BMI_MAX_VAR_NAME);
+  }
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_component_name (void *self, char *name)
+{
+  strncpy (name, "Cyclone Windfield Simulator", BMI_MAX_COMPONENT_NAME);
+  return BMI_SUCCESS;
+}
+
+
 BMI_Model *
 Construct_storm_bmi(BMI_Model *model)
 {
@@ -148,13 +257,13 @@ Construct_storm_bmi(BMI_Model *model)
     model->finalize = Finalize;
     model->run_model = NULL;
 
-    /* model->get_component_name = Get_component_name; */
-    /* model->get_input_var_name_count = Get_input_var_name_count; */
-    /* model->get_output_var_name_count = Get_output_var_name_count; */
-    /* model->get_input_var_names = Get_input_var_names; */
-    /* model->get_output_var_names = Get_output_var_names; */
+    model->get_component_name = Get_component_name;
+    model->get_input_var_name_count = Get_input_var_name_count;
+    model->get_output_var_name_count = Get_output_var_name_count;
+    model->get_input_var_names = Get_input_var_names;
+    model->get_output_var_names = Get_output_var_names;
 
-    /* model->get_var_type = Get_var_type; */
+    model->get_var_type = Get_var_type;
     /* model->get_var_units = Get_var_units; */
     /* model->get_var_rank = Get_var_rank; */
     /* model->get_var_size = Get_var_size; */
