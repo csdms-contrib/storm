@@ -199,6 +199,88 @@ Get_var_type (void *self, const char *name, char *type)
 
 
 static int
+Get_var_units (void *self, const char *name, char *units)
+{
+  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    strncpy(units, "1", BMI_MAX_UNITS_NAME); /* TODO: check this */
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    strncpy(units, "1", BMI_MAX_UNITS_NAME); /* TODO: check this */
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    strncpy(units, "m s-1", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+    strncpy(units, "degrees", BMI_MAX_UNITS_NAME); /* TODO: check this */
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    strncpy(units, "Pa", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    strncpy(units, "Pa", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    strncpy(units, "m", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    strncpy(units, "m", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+    strncpy(units, "m s-1", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
+    strncpy(units, "m s-1", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  }
+  else {
+    units[0] = '\0';
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
+Get_var_rank (void *self, const char *name, int *rank)
+{
+  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    *rank = 0; /* TODO: check this */
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    *rank = 0; /* TODO: check this */
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+    *rank = 2;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
+    *rank = 2;
+    return BMI_SUCCESS;
+  }
+  else {
+    *rank = -1;
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
 Get_input_var_name_count (void *self, int *count)
 {
   *count = INPUT_VAR_NAME_COUNT;
@@ -264,8 +346,8 @@ Construct_storm_bmi(BMI_Model *model)
     model->get_output_var_names = Get_output_var_names;
 
     model->get_var_type = Get_var_type;
-    /* model->get_var_units = Get_var_units; */
-    /* model->get_var_rank = Get_var_rank; */
+    model->get_var_units = Get_var_units;
+    model->get_var_rank = Get_var_rank;
     /* model->get_var_size = Get_var_size; */
     /* model->get_var_nbytes = Get_var_nbytes; */
     model->get_current_time = Get_current_time;
