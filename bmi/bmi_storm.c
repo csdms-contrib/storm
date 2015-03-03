@@ -426,6 +426,95 @@ Get_grid_type (void *self, const char *name, char *type)
 
 
 static int
+Get_value_ptr (void *self, const char *name, void **dest)
+{
+  int status = BMI_FAILURE;
+  void *src = NULL;
+
+  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    src = &((StormModel *) self)->center[1];
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    src = &((StormModel *) self)->center[1];
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    src = &((StormModel *) self)->sspd;
+  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+    src = &((StormModel *) self)->sdir;
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    src = &((StormModel *) self)->pcent;
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    src = &((StormModel *) self)->pedge;
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    src = &((StormModel *) self)->rmaxw;
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    src = &((StormModel *) self)->srad;
+  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+    src = ((StormModel *) self)->windx[0];
+  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
+    src = ((StormModel *) self)->windy[0];
+  }
+
+  *dest = src;
+
+  if (src)
+    status = BMI_SUCCESS;
+
+  return status;
+}
+
+
+static int
+Get_value (void *self, const char *name, void *dest)
+{
+  int status = BMI_SUCCESS;
+  void *src = NULL;
+  int nbytes = 0;
+
+  status = Get_value_ptr (self, name, &src);
+  if (status == BMI_FAILURE)
+    return status;
+
+  status = Get_var_nbytes (self, name, &nbytes);
+  if (status == BMI_FAILURE)
+    return status;
+
+  memcpy (dest, src, nbytes);
+
+  return status;
+}
+
+
+static int
+Get_value_at_indices (void *self, const char *name, void *dest,
+		      int *inds, int len)
+{
+  int status = BMI_SUCCESS;
+  void *src = NULL;
+  const int itemsize = sizeof(double);
+
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+
+    status = Get_value_ptr (self, name, &src);
+    if (status == BMI_FAILURE)
+      return status;
+
+    {
+      /* Copy the data */
+      int i;
+      int offset;
+      void * ptr;
+      for (i=0, ptr=dest; i<len; i++, ptr+=itemsize) {
+	offset = inds[i] * itemsize;
+	memcpy (ptr, src + offset, itemsize);
+      }
+    }
+  }
+
+  return status;
+}
+
+
+static int
 Get_input_var_name_count (void *self, int *count)
 {
   *count = INPUT_VAR_NAME_COUNT;
@@ -501,9 +590,9 @@ Construct_storm_bmi(BMI_Model *model)
     model->get_time_units = Get_time_units;
     model->get_time_step = Get_time_step;
 
-    /* model->get_value = Get_value; */
-    /* model->get_value_ptr = Get_value_ptr; */
-    /* model->get_value_at_indices = Get_value_at_indices; */
+    model->get_value = Get_value;
+    model->get_value_ptr = Get_value_ptr;
+    model->get_value_at_indices = Get_value_at_indices;
 
     /* model->set_value = Set_value; */
     /* model->set_value_ptr = NULL; */
