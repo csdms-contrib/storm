@@ -9,6 +9,7 @@ extern "C" {
 #define BMI_FAILURE (1)
 
 #define BMI_MAX_UNITS_NAME (2048)
+#define BMI_MAX_TYPE_NAME (2048)
 #define BMI_MAX_COMPONENT_NAME (2048)
 #define BMI_MAX_VAR_NAME (2048)
 
