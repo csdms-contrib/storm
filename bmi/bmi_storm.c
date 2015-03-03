@@ -348,6 +348,84 @@ Get_var_nbytes (void *self, const char *name, int *nbytes)
 
 
 static int
+Get_grid_shape (void *self, const char *name, int *shape)
+{
+  int status = BMI_SUCCESS;
+
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+    shape[0] = ((StormModel *)self)->shape[0];
+    shape[1] = ((StormModel *)self)->shape[1];
+
+    fprintf(stderr, "Grid shape is %d x %d\n", shape[0], shape[1]);
+    fflush(stderr);
+  }
+  else {
+    *shape = -1;
+    status = BMI_FAILURE;
+  }
+
+  return status;
+}
+
+
+static int
+Get_grid_spacing (void *self, const char *name, double *spacing)
+{
+  int status = BMI_SUCCESS;
+
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+    spacing[0] = ((StormModel *)self)->spacing[0];
+    spacing[1] = ((StormModel *)self)->spacing[1];
+  }
+  else {
+    *spacing = -1.0;
+    status = BMI_FAILURE;
+  }
+
+  return status;
+}
+
+
+static int
+Get_grid_origin (void *self, const char *name, double *origin)
+{
+  int status = BMI_SUCCESS;
+
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+    origin[0] = 0.0;
+    origin[1] = 0.0;
+  }
+  else {
+    *origin = -1.0;
+    status = BMI_FAILURE;
+  }
+
+  return status;
+}
+
+
+static int
+Get_grid_type (void *self, const char *name, char *type)
+{
+  int status = BMI_SUCCESS;
+
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+    strncpy(type, "uniform_rectilinear", BMI_MAX_TYPE_NAME);
+  }
+  else {
+    type[0] = '\0';
+    status = BMI_FAILURE;
+  }
+
+  return status;
+}
+
+
+static int
 Get_input_var_name_count (void *self, int *count)
 {
   *count = INPUT_VAR_NAME_COUNT;
@@ -431,10 +509,10 @@ Construct_storm_bmi(BMI_Model *model)
     /* model->set_value_ptr = NULL; */
     /* model->set_value_at_indices = Set_value_at_indices; */
 
-    /* model->get_grid_type = Get_grid_type; */
-    /* model->get_grid_shape = Get_grid_shape; */
-    /* model->get_grid_spacing = Get_grid_spacing; */
-    /* model->get_grid_origin = Get_grid_origin; */
+    model->get_grid_type = Get_grid_type;
+    model->get_grid_shape = Get_grid_shape;
+    model->get_grid_spacing = Get_grid_spacing;
+    model->get_grid_origin = Get_grid_origin;
 
     /* model->get_grid_x = NULL; */
     /* model->get_grid_y = NULL; */
