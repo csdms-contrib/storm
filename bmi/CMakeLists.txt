@@ -9,6 +9,7 @@ set(BUILD_SHARED_LIBS ON)
 
 set(bmi_storm_lib_srcs 
   bmi_storm.c 
+  bmi.c
   ${model_dir}/storm.c 
   ${model_dir}/storm_compute.c)
 
@@ -19,7 +20,7 @@ add_library(bmi_storm ${bmi_storm_lib_srcs})
 install(TARGETS bmi_storm
         DESTINATION lib 
 	COMPONENT storm)
-install(FILES bmi_storm.h bmi.h
+install(FILES bmi_storm.h bmi.h bmilib.h
         DESTINATION include/storm
 	COMPONENT storm)
 install(FILES storm.pc 
