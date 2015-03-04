@@ -17,3 +17,5 @@ include_directories(${bmi_dir})
 add_subdirectory(bmi)
 add_subdirectory(storm)
 add_subdirectory(testing)
+
+include(CTest)
