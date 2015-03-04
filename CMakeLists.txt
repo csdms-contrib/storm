@@ -8,6 +8,7 @@ set(CMAKE_C_FLAGS "-ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes 
 
 set(model_dir ${CMAKE_HOME_DIRECTORY}/storm)
 set(bmi_dir ${CMAKE_HOME_DIRECTORY}/bmi)
+set(data_dir ${CMAKE_HOME_DIRECTORY}/testing/data)
 
 include_directories(${CMAKE_HOME_DIRECTORY})
 include_directories(${model_dir})
@@ -15,3 +16,4 @@ include_directories(${bmi_dir})
 
 add_subdirectory(bmi)
 add_subdirectory(storm)
+add_subdirectory(testing)
