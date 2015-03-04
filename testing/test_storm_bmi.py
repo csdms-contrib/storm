@@ -18,7 +18,7 @@ data_dir = os.path.join(start_dir, 'testing', 'data')
 input_file1 = os.path.join(data_dir, 'test1.in')
 input_file2 = os.path.join(data_dir, 'test2.in')
 build_dir = os.path.join(start_dir, 'build')
-exe = './bmi/storm'
+exe = './storm/storm'
 
 # Fixtures -------------------------------------------------------------
 
