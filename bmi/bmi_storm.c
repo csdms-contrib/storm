@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <bmi/bmi.h>
-
+#include "bmi.h"
 #include "bmi_storm.h"
-#include "storm.h"
+#include "storm/storm.h"
 
 
 #define INPUT_VAR_NAME_COUNT 8
