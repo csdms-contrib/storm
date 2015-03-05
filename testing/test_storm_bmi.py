@@ -27,7 +27,7 @@ def setup_module():
     Called before any tests are performed.
     '''
     print('*** BMI tests')
-    os.mkdir(build_dir)
+    if os.path.exists(build_dir) is False: os.mkdir(build_dir)
     os.chdir(build_dir)
 
 def teardown_module():
