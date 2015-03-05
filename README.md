@@ -1,7 +1,9 @@
+[![Build Status](https://travis-ci.org/csdms-contrib/storm.svg?branch=reference%2Ffaithful-c-port)](https://travis-ci.org/csdms-contrib/storm)
+
 # storm
 
-**Storm** computes the windfield for a cyclone based on the pressure
-distribution and radius to maximum winds.
+**Storm** computes the horizontal windfield for a cyclone 
+based on the central pressure and radius of maximum winds.
 
 This is a "faithful" C translation
 of the original Fortran 77 version of **storm**.
@@ -12,8 +14,8 @@ is preserved.
 To make the outputs from this version
 match those of the Fortran version:
 
-1. the location indices of the storm center have been decremented by
-   one;
+1. the location indices of the storm center (`mcent`, `ncent`) have
+   been decremented by one;
 1. the write order of the `wdir`, `windx` and `windy` variables have
    been transposed.
 
