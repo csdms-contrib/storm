@@ -22,6 +22,7 @@ set (bmi_irf_SRCS test_irf.c)
 # set (bmi_grid_info_SRCS test_grid_info.c)
 
 add_executable(test_irf ${bmi_irf_SRCS})
+target_link_libraries(test_irf m)
 # add_executable(test_print_var_names ${bmi_var_names_SRCS})
 # add_executable(test_get_value ${bmi_get_value_SRCS})
 # add_executable(test_set_value ${bmi_set_value_SRCS})
