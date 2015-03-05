@@ -30,12 +30,12 @@ main (void)
     fprintf (stdout, "==============\n");
     print_var_values (model, "atmosphere_air_flow__east_component_of_velocity");
 
+    fprintf (stdout, "Values at time %d\n", i);
+    fprintf (stdout, "==============\n");
+    print_var_values (model, "atmosphere_air_flow__north_component_of_velocity");
+
     BMI_Update (model);
   }
-
-  fprintf (stdout, "Values at time %d\n", i);
-  fprintf (stdout, "==============\n");
-  print_var_values (model, "atmosphere_air_flow__north_component_of_velocity");
 
   BMI_Finalize (model);
 
@@ -57,7 +57,6 @@ print_var_values (void *model, const char *var_name)
   shape = (int*) malloc (sizeof (int) * rank);
 
   BMI_Get_grid_shape (model, var_name, shape);
-  fprintf (stderr, "shape = %d x %d\n", shape[0], shape[1]);
 
   {
     int n;
