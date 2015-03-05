@@ -15,9 +15,9 @@ storm_from_default (void)
   StormModel *self = (StormModel*) malloc (sizeof(StormModel));
 
   if (self) {
-    self->t = 0;
-    self->dt = 1;
-    self->t_end = 1;
+    self->t = 0.0;
+    self->dt = 1.0;
+    self->t_end = 1.0;
     self->shape[0] = 8;
     self->shape[1] = 6;
     self->spacing[0] = 25000.0;
@@ -46,8 +46,8 @@ storm_from_input_file (const char *filename)
   StormModel *self = NULL;
   FILE *fp = NULL;
   char line[MAX_LEN];
-  int t_end, xsize, ysize;
-  double dx, dy;
+  int xsize, ysize;
+  double t_end, dx, dy;
 
   fp = fopen (filename, "r");
   if (!fp) {
@@ -57,12 +57,12 @@ storm_from_input_file (const char *filename)
     strcpy(self->filename, filename);
   }
 
-  fscanf(fp, "%d %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
+  fscanf(fp, "%lf %d %d %lf %lf", &t_end, &xsize, &ysize, &dx, &dy);
   fgets(line, MAX_LEN, fp);
   fclose(fp);
 
-  self->t = 0;
-  self->dt = 1;
+  self->t = 0.0;
+  self->dt = 1.0;
   self->t_end = t_end;
   self->shape[0] = xsize;
   self->shape[1] = ysize;

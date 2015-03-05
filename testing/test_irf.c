@@ -38,7 +38,7 @@ main (void)
   {
     int i;
     const int n_steps = 10;
-    const double t_until = 1000.0;
+    const double t_until = 100.5;
     double time;
     double dt;
 

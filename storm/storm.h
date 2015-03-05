@@ -13,9 +13,9 @@ extern "C" {
 
 typedef struct {
   char filename[MAX_LEN]; /* input file */
-  int t;                  /* current time step */
-  int dt;                 /* time increment */
-  int t_end;              /* last time step */
+  double t;               /* current time step */
+  double dt;              /* time increment */
+  double t_end;           /* last time step */
   int shape[2];           /* grid dimensions */
   double spacing[2];      /* grid spacing [m] */
   int center[2];          /* grid cell of storm center */

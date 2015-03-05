@@ -25,12 +25,12 @@ main(int argc, char *argv[])
 
   while (m->t < m->t_end) {
     storm_advance_time (m);
-    printf ("Timestep: %d\n", m->t);
+    printf ("Timestep: %d\n", (int) m->t);
 
-    sprintf (wdir_file, "wdir_%03d.out", m->t);
-    sprintf (wspd_file, "wspd_%03d.out", m->t);
-    sprintf (windx_file, "windx_%03d.out", m->t);
-    sprintf (windy_file, "windy_%03d.out", m->t);
+    sprintf (wdir_file, "wdir_%03d.out", (int) m->t);
+    sprintf (wspd_file, "wspd_%03d.out", (int) m->t);
+    sprintf (windx_file, "windx_%03d.out", (int) m->t);
+    sprintf (windy_file, "windy_%03d.out", (int) m->t);
 
     storm_write_output (wdir_file, m->wdir, m->shape);
     storm_write_output (wspd_file, m->wspd, m->shape);
