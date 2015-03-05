@@ -153,7 +153,7 @@ Get_var_type (void *self, const char *name, char *type)
   } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
     strncpy(type, "double", BMI_MAX_TYPE_NAME);
     return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
     strncpy(type, "double", BMI_MAX_TYPE_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
@@ -194,7 +194,7 @@ Get_var_units (void *self, const char *name, char *units)
   } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
     strncpy(units, "meters second-1", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
     strncpy(units, "degrees", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
@@ -235,7 +235,7 @@ Get_var_rank (void *self, const char *name, int *rank)
   } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
     *rank = 0;
     return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
     *rank = 0;
     return BMI_SUCCESS;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
@@ -275,7 +275,7 @@ Get_var_size (void *self, const char *name, int *size)
     *size = 1;
   } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
     *size = 1;
-  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
     *size = 1;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
     *size = 1;
@@ -421,7 +421,7 @@ Get_value_ptr (void *self, const char *name, void **dest)
     src = &((StormModel *) self)->center[1];
   } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
     src = &((StormModel *) self)->sspd;
-  } else if (strcmp (name, "cyclone__azimuth_of_velocity") == 0) {
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
     src = &((StormModel *) self)->sdir;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
     src = &((StormModel *) self)->pcent;
