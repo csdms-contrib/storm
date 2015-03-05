@@ -18,18 +18,18 @@ storm_from_default (void)
     self->t = 0;
     self->dt = 1;
     self->t_end = 1;
-    self->shape[0] = 50;
-    self->shape[1] = 25;
-    self->spacing[0] = 5000.0;
-    self->spacing[1] = 10000.0;
-    self->center[0] = 24;
-    self->center[1] = 12;
+    self->shape[0] = 8;
+    self->shape[1] = 6;
+    self->spacing[0] = 25000.0;
+    self->spacing[1] = 20000.0;
+    self->center[0] = 4;
+    self->center[1] = 3;
     self->sspd = 5.0;
     self->sdir = 210.0 * PI / 180.0;
     self->pcent = 99000.0;
-    self->pedge = 101500.0;
-    self->rmaxw = 65000.0;
-    self->srad = 3000000.0;
+    self->pedge = 101200.0;
+    self->rmaxw = 40000.0;
+    self->srad = 100000.0;
   }
   else
     return NULL;
