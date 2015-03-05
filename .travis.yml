@@ -13,7 +13,7 @@ before_install:
 install:
   - mkdir _build
   - cd _build
-  - cmake ../ -DCMAKE_INSTALL_PREFIX=$(pwd)/../_inst -DCMAKE_VERBOSE_MAKEFILE=True
+  - cmake ../ -DCMAKE_INSTALL_PREFIX=$(pwd)/../_inst
   - make install
 
 script:
