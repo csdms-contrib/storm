@@ -198,10 +198,10 @@ Get_var_units (void *self, const char *name, char *units)
     strncpy(units, "degrees", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
-    strncpy(units, "pascal", BMI_MAX_UNITS_NAME);
+    strncpy(units, "pascals", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
-    strncpy(units, "pascal", BMI_MAX_UNITS_NAME);
+    strncpy(units, "pascals", BMI_MAX_UNITS_NAME);
     return BMI_SUCCESS;
   } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
     strncpy(units, "meters", BMI_MAX_UNITS_NAME);
@@ -340,9 +340,6 @@ Get_grid_shape (void *self, const char *name, int *shape)
       (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
     shape[0] = ((StormModel *)self)->shape[0];
     shape[1] = ((StormModel *)self)->shape[1];
-
-    fprintf(stderr, "Grid shape is %d x %d\n", shape[0], shape[1]);
-    fflush(stderr);
   }
   else {
     *shape = -1;
