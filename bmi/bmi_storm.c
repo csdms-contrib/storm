@@ -326,13 +326,14 @@ Get_grid_origin (void *self, int grid, double *origin)
 
 
 static int
-Get_grid_type (void *self, const char *name, char *type)
+Get_grid_type (void *self, int grid, char *type)
 {
   int status = BMI_SUCCESS;
 
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+  if (grid == 0) {
     strncpy(type, "uniform_rectilinear", BMI_MAX_TYPE_NAME);
+  } else if (grid == 1) {
+    strncpy(type, "scalar", BMI_MAX_TYPE_NAME);
   }
   else {
     type[0] = '\0';
