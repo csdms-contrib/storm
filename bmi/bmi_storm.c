@@ -224,6 +224,37 @@ Get_var_units (void *self, const char *name, char *units)
 
 
 static int
+Get_var_nbytes (void *self, const char *name, int *nbytes)
+{
+  int size = 0;
+  int grid;
+  char type[BMI_MAX_TYPE_NAME];
+
+  *nbytes = -1;
+
+  if (Get_var_grid (self, name, &grid) == BMI_FAILURE)
+    return BMI_FAILURE;
+
+  if (Get_grid_size (self, grid, &size) == BMI_FAILURE)
+    return BMI_FAILURE;
+
+  if (Get_var_type (self, name, type) == BMI_FAILURE)
+    return BMI_FAILURE;
+
+  if (strcmp (type, "int") == 0) {
+    *nbytes = sizeof (int) * size;
+    return BMI_SUCCESS;
+  } else if (strcmp (type, "double") == 0) {
+    *nbytes = sizeof (double) * size;
+    return BMI_SUCCESS;
+  }
+  else {
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
 Get_grid_rank (void *self, int grid, int *rank)
 {
   if (grid == 0) {
@@ -254,38 +285,6 @@ Get_grid_size (void *self, int grid, int *size)
     *size = -1;
     return BMI_FAILURE;
   }
-}
-
-
-static int
-Get_var_nbytes (void *self, const char *name, int *nbytes)
-{
-  int status = BMI_SUCCESS;
-
-  {
-    int size = 0;
-    char type[BMI_MAX_TYPE_NAME];
-
-    status = Get_var_size (self, name, &size);
-    if (status == BMI_FAILURE)
-      return status;
-
-    status = Get_var_type (self, name, type);
-    if (status == BMI_FAILURE)
-      return status;
-
-    if (strcmp (type, "int") == 0) {
-      *nbytes = sizeof (int) * size;
-    } else if (strcmp (type, "double") == 0) {
-      *nbytes = sizeof (double) * size;
-    } 
-    else {
-      *nbytes = -1;
-      status = BMI_FAILURE;
-    }
-  }
-
-  return status;
 }
 
 
