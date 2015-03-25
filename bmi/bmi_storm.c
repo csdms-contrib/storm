@@ -224,37 +224,13 @@ Get_var_units (void *self, const char *name, char *units)
 
 
 static int
-Get_var_rank (void *self, const char *name, int *rank)
+Get_grid_rank (void *self, int grid, int *rank)
 {
-  if (strcmp (name, "model_grid_cell__row_index") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__radius") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+  if (grid == 0) {
     *rank = 2;
     return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
-    *rank = 2;
+  } else if (grid == 1) {
+    *rank = 0;
     return BMI_SUCCESS;
   }
   else {
@@ -265,37 +241,19 @@ Get_var_rank (void *self, const char *name, int *rank)
 
 
 static int
-Get_var_size (void *self, const char *name, int *size)
+Get_grid_size (void *self, int grid, int *size)
 {
-  int status = BMI_SUCCESS;
-
-  if (strcmp (name, "model_grid_cell__row_index") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone__radius") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+  if (grid == 0) {
     *size = ((StormModel *)self)->shape[0] * ((StormModel *)self)->shape[1];
-  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
-    *size = ((StormModel *)self)->shape[0] * ((StormModel *)self)->shape[1];
+    return BMI_SUCCESS;
+  } else if (grid == 1) {
+    *size = 1;
+    return BMI_SUCCESS;
   }
   else {
     *size = -1;
-    status = BMI_FAILURE;
+    return BMI_FAILURE;
   }
-
-  return status;
 }
 
 
