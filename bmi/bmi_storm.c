@@ -290,59 +290,38 @@ Get_var_nbytes (void *self, const char *name, int *nbytes)
 
 
 static int
-Get_grid_shape (void *self, const char *name, int *shape)
+Get_grid_shape (void *self, int grid, int *shape)
 {
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+  if (grid == 0) {
     shape[0] = ((StormModel *)self)->shape[0];
     shape[1] = ((StormModel *)self)->shape[1];
   }
-  else {
-    *shape = -1;
-    status = BMI_FAILURE;
-  }
 
-  return status;
+  return BMI_SUCCESS;
 }
 
 
 static int
-Get_grid_spacing (void *self, const char *name, double *spacing)
+Get_grid_spacing (void *self, int grid, double *spacing)
 {
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+  if (grid == 0) {
     spacing[0] = ((StormModel *)self)->spacing[0];
     spacing[1] = ((StormModel *)self)->spacing[1];
   }
-  else {
-    *spacing = -1.0;
-    status = BMI_FAILURE;
-  }
 
-  return status;
+  return BMI_SUCCESS;
 }
 
 
 static int
-Get_grid_origin (void *self, const char *name, double *origin)
+Get_grid_origin (void *self, int grid, double *origin)
 {
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+  if (grid == 0) {
     origin[0] = 0.0;
     origin[1] = 0.0;
   }
-  else {
-    *origin = -1.0;
-    status = BMI_FAILURE;
-  }
 
-  return status;
+  return BMI_SUCCESS;
 }
 
 
