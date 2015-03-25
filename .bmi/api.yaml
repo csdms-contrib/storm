@@ -1,0 +1,16 @@
+name: Storm
+language: c
+
+register: register_bmi_storm
+includes:
+  - "#include <bmi/bmi_storm.h>"
+  - "#include <bmi/bmilib.h>"
+cflags:
+  pkgconfig: storm
+libs:
+  pkgconfig: storm
+
+build:
+  brew:
+    formula: csdms/models/storm
+    options: "--HEAD"
