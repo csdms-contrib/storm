@@ -142,6 +142,136 @@ Finalize (void *self)
 
 
 static int
+Get_grid_rank (void *self, int grid, int *rank)
+{
+  if (grid == 0) {
+    *rank = 2;
+    return BMI_SUCCESS;
+  } else if (grid == 1) {
+    *rank = 0;
+    return BMI_SUCCESS;
+  }
+  else {
+    *rank = -1;
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
+Get_grid_size (void *self, int grid, int *size)
+{
+  if (grid == 0) {
+    *size = ((StormModel *)self)->shape[0] * ((StormModel *)self)->shape[1];
+    return BMI_SUCCESS;
+  } else if (grid == 1) {
+    *size = 1;
+    return BMI_SUCCESS;
+  }
+  else {
+    *size = -1;
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
+Get_grid_shape (void *self, int grid, int *shape)
+{
+  if (grid == 0) {
+    shape[0] = ((StormModel *)self)->shape[0];
+    shape[1] = ((StormModel *)self)->shape[1];
+  }
+
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_grid_spacing (void *self, int grid, double *spacing)
+{
+  if (grid == 0) {
+    spacing[0] = ((StormModel *)self)->spacing[0];
+    spacing[1] = ((StormModel *)self)->spacing[1];
+  }
+
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_grid_origin (void *self, int grid, double *origin)
+{
+  if (grid == 0) {
+    origin[0] = 0.0;
+    origin[1] = 0.0;
+  }
+
+  return BMI_SUCCESS;
+}
+
+
+static int
+Get_grid_type (void *self, int grid, char *type)
+{
+  int status = BMI_SUCCESS;
+
+  if (grid == 0) {
+    strncpy(type, "uniform_rectilinear", BMI_MAX_TYPE_NAME);
+  } else if (grid == 1) {
+    strncpy(type, "scalar", BMI_MAX_TYPE_NAME);
+  }
+  else {
+    type[0] = '\0';
+    status = BMI_FAILURE;
+  }
+
+  return status;
+}
+
+
+/* The output 2D wind fields are assigned an id of 0. */
+/* The input parameters are scalars, and are assigned an id of 1. */
+static int
+Get_var_grid (void *self, const char *name, int *grid)
+{
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) || 
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+    *grid = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  }
+  else {
+    *grid = -1;
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
 Get_var_type (void *self, const char *name, char *type)
 {
   if (strcmp (name, "model_grid_cell__row_index") == 0) {
@@ -224,185 +354,33 @@ Get_var_units (void *self, const char *name, char *units)
 
 
 static int
-Get_var_rank (void *self, const char *name, int *rank)
-{
-  if (strcmp (name, "model_grid_cell__row_index") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "cyclone__radius") == 0) {
-    *rank = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
-    *rank = 2;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
-    *rank = 2;
-    return BMI_SUCCESS;
-  }
-  else {
-    *rank = -1;
-    return BMI_FAILURE;
-  }
-}
-
-
-static int
-Get_var_size (void *self, const char *name, int *size)
-{
-  int status = BMI_SUCCESS;
-
-  if (strcmp (name, "model_grid_cell__row_index") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "cyclone__radius") == 0) {
-    *size = 1;
-  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
-    *size = ((StormModel *)self)->shape[0] * ((StormModel *)self)->shape[1];
-  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
-    *size = ((StormModel *)self)->shape[0] * ((StormModel *)self)->shape[1];
-  }
-  else {
-    *size = -1;
-    status = BMI_FAILURE;
-  }
-
-  return status;
-}
-
-
-static int
 Get_var_nbytes (void *self, const char *name, int *nbytes)
 {
-  int status = BMI_SUCCESS;
+  int size = 0;
+  int grid;
+  char type[BMI_MAX_TYPE_NAME];
 
-  {
-    int size = 0;
-    char type[BMI_MAX_TYPE_NAME];
+  *nbytes = -1;
 
-    status = Get_var_size (self, name, &size);
-    if (status == BMI_FAILURE)
-      return status;
+  if (Get_var_grid (self, name, &grid) == BMI_FAILURE)
+    return BMI_FAILURE;
 
-    status = Get_var_type (self, name, type);
-    if (status == BMI_FAILURE)
-      return status;
+  if (Get_grid_size (self, grid, &size) == BMI_FAILURE)
+    return BMI_FAILURE;
 
-    if (strcmp (type, "int") == 0) {
-      *nbytes = sizeof (int) * size;
-    } else if (strcmp (type, "double") == 0) {
-      *nbytes = sizeof (double) * size;
-    } 
-    else {
-      *nbytes = -1;
-      status = BMI_FAILURE;
-    }
-  }
+  if (Get_var_type (self, name, type) == BMI_FAILURE)
+    return BMI_FAILURE;
 
-  return status;
-}
-
-
-static int
-Get_grid_shape (void *self, const char *name, int *shape)
-{
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
-    shape[0] = ((StormModel *)self)->shape[0];
-    shape[1] = ((StormModel *)self)->shape[1];
+  if (strcmp (type, "int") == 0) {
+    *nbytes = sizeof (int) * size;
+    return BMI_SUCCESS;
+  } else if (strcmp (type, "double") == 0) {
+    *nbytes = sizeof (double) * size;
+    return BMI_SUCCESS;
   }
   else {
-    *shape = -1;
-    status = BMI_FAILURE;
+    return BMI_FAILURE;
   }
-
-  return status;
-}
-
-
-static int
-Get_grid_spacing (void *self, const char *name, double *spacing)
-{
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
-    spacing[0] = ((StormModel *)self)->spacing[0];
-    spacing[1] = ((StormModel *)self)->spacing[1];
-  }
-  else {
-    *spacing = -1.0;
-    status = BMI_FAILURE;
-  }
-
-  return status;
-}
-
-
-static int
-Get_grid_origin (void *self, const char *name, double *origin)
-{
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
-    origin[0] = 0.0;
-    origin[1] = 0.0;
-  }
-  else {
-    *origin = -1.0;
-    status = BMI_FAILURE;
-  }
-
-  return status;
-}
-
-
-static int
-Get_grid_type (void *self, const char *name, char *type)
-{
-  int status = BMI_SUCCESS;
-
-  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) ||
-      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
-    strncpy(type, "uniform_rectilinear", BMI_MAX_TYPE_NAME);
-  }
-  else {
-    type[0] = '\0';
-    status = BMI_FAILURE;
-  }
-
-  return status;
 }
 
 
@@ -594,7 +572,7 @@ Get_component_name (void *self, char *name)
 
 
 BMI_Model *
-Construct_storm_bmi(BMI_Model *model)
+register_bmi_storm (BMI_Model *model)
 {
   if (model) {
     model->self = NULL;
@@ -612,10 +590,9 @@ Construct_storm_bmi(BMI_Model *model)
     model->get_input_var_names = Get_input_var_names;
     model->get_output_var_names = Get_output_var_names;
 
+    model->get_var_grid = Get_var_grid;
     model->get_var_type = Get_var_type;
     model->get_var_units = Get_var_units;
-    model->get_var_rank = Get_var_rank;
-    model->get_var_size = Get_var_size;
     model->get_var_nbytes = Get_var_nbytes;
     model->get_current_time = Get_current_time;
     model->get_start_time = Get_start_time;
@@ -631,6 +608,8 @@ Construct_storm_bmi(BMI_Model *model)
     model->set_value_ptr = NULL;
     model->set_value_at_indices = Set_value_at_indices;
 
+    model->get_grid_size = Get_grid_size;
+    model->get_grid_rank = Get_grid_rank;
     model->get_grid_type = Get_grid_type;
     model->get_grid_shape = Get_grid_shape;
     model->get_grid_spacing = Get_grid_spacing;

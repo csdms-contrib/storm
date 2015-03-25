@@ -12,7 +12,7 @@ main (void)
   int status = BMI_SUCCESS;
   BMI_Model *model = (BMI_Model *)malloc (sizeof(BMI_Model));
 
-  Construct_storm_bmi(model);
+  register_bmi_storm (model);
 
   {
     fprintf (stdout, "Initializing... ");

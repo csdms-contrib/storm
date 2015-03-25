@@ -30,10 +30,9 @@ typedef struct {
   int (* get_input_var_names)(void *, char **);
   int (* get_output_var_names)(void *, char **);
 
+  int (* get_var_grid)(void *, const char *, int *);
   int (* get_var_type)(void *, const char *, char *);
   int (* get_var_units)(void *, const char *, char *);
-  int (* get_var_rank)(void *, const char *, int *);
-  int (* get_var_size)(void *, const char *, int *);
   int (* get_var_nbytes)(void *, const char *, int *);
   int (* get_current_time)(void *, double *);
   int (* get_start_time)(void *, double *);
@@ -51,21 +50,23 @@ typedef struct {
   int (* set_value_at_indices)(void *, const char *, int *, int, void *);
 
   /* Grid information functions */
-  int (* get_grid_type)(void *, const char *, char *);
-  int (* get_grid_shape)(void *, const char *, int *);
-  int (* get_grid_spacing)(void *, const char *, double *);
-  int (* get_grid_origin)(void *, const char *, double *);
+  int (* get_grid_size)(void *, int, int *);
+  int (* get_grid_rank)(void *, int, int *);
+  int (* get_grid_type)(void *, int, char *);
+  int (* get_grid_shape)(void *, int, int *);
+  int (* get_grid_spacing)(void *, int, double *);
+  int (* get_grid_origin)(void *, int, double *);
 
-  int (* get_grid_x)(void *, const char *, double *);
-  int (* get_grid_y)(void *, const char *, double *);
-  int (* get_grid_z)(void *, const char *, double *);
+  int (* get_grid_x)(void *, int, double *);
+  int (* get_grid_y)(void *, int, double *);
+  int (* get_grid_z)(void *, int, double *);
 
-  int (* get_grid_cell_count)(void *, const char *, int *);
-  int (* get_grid_point_count)(void *, const char *, int *);
-  int (* get_grid_vertex_count)(void *, const char *, int *);
+  int (* get_grid_cell_count)(void *, int, int *);
+  int (* get_grid_point_count)(void *, int, int *);
+  int (* get_grid_vertex_count)(void *, int, int *);
 
-  int (* get_grid_connectivity)(void *, const char *, int *);
-  int (* get_grid_offset)(void *, const char *, int *);
+  int (* get_grid_connectivity)(void *, int, int *);
+  int (* get_grid_offset)(void *, int, int *);
 } BMI_Model;
 
 

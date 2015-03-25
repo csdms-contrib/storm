@@ -93,6 +93,11 @@ int BMI_Get_end_time(BMI_Model* model, double * time) {
 }
 
 
+int BMI_Get_var_grid(BMI_Model * model, const char * name, int * grid) {
+  call_bmi_and_return(model, get_var_grid, name, grid);
+}
+
+
 int BMI_Get_var_type(BMI_Model * model, const char * name, char * type) {
   call_bmi_and_return(model, get_var_type, name, type);
 }
@@ -103,84 +108,78 @@ int BMI_Get_var_units(BMI_Model * model, const char * name, char * units) {
 }
 
 
-int BMI_Get_var_rank(BMI_Model * model, const char * name, int * rank) {
-  call_bmi_and_return(model, get_var_rank, name, rank);
-}
-
-
-int BMI_Get_var_size(BMI_Model * model, const char * name, int * size) {
-  call_bmi_and_return(model, get_var_size, name, size);
-}
-
-
 int BMI_Get_var_nbytes(BMI_Model * model, const char * name, int * nbytes) {
   call_bmi_and_return(model, get_var_nbytes, name, nbytes);
 }
 
 
-int BMI_Get_grid_type(BMI_Model * model, const char * name, char * type) {
-  call_bmi_and_return(model, get_grid_type, name, type);
+int BMI_Get_grid_rank(BMI_Model * model, int grid, int * rank) {
+  call_bmi_and_return(model, get_grid_rank, grid, rank);
 }
 
 
-int BMI_Get_grid_shape(BMI_Model * model, const char * name, int * shape) {
-  call_bmi_and_return(model, get_grid_shape, name, shape);
+int BMI_Get_grid_size(BMI_Model * model, int grid, int * size) {
+  call_bmi_and_return(model, get_grid_size, grid, size);
 }
 
 
-int BMI_Get_grid_spacing(BMI_Model * model, const char * name,
-    double * spacing) {
-  call_bmi_and_return(model, get_grid_spacing, name, spacing);
+int BMI_Get_grid_type(BMI_Model * model, int grid, char * type) {
+  call_bmi_and_return(model, get_grid_type, grid, type);
 }
 
 
-int BMI_Get_grid_origin(BMI_Model * model, const char * name,
-    double * origin) {
-  call_bmi_and_return(model, get_grid_origin, name, origin);
+int BMI_Get_grid_shape(BMI_Model * model, int grid, int * shape) {
+  call_bmi_and_return(model, get_grid_shape, grid, shape);
 }
 
 
-int BMI_Get_grid_x(BMI_Model * model, const char * name, double * x) {
-  call_bmi_and_return(model, get_grid_x, name, x);
+int BMI_Get_grid_spacing(BMI_Model * model, int grid, double * spacing) {
+  call_bmi_and_return(model, get_grid_spacing, grid, spacing);
 }
 
 
-int BMI_Get_grid_y(BMI_Model * model, const char * name, double * y) {
-  call_bmi_and_return(model, get_grid_y, name, y);
+int BMI_Get_grid_origin(BMI_Model * model, int grid, double * origin) {
+  call_bmi_and_return(model, get_grid_origin, grid, origin);
 }
 
 
-int BMI_Get_grid_z(BMI_Model * model, const char * name, double * z) {
-  call_bmi_and_return(model, get_grid_z, name, z);
+int BMI_Get_grid_x(BMI_Model * model, int grid, double * x) {
+  call_bmi_and_return(model, get_grid_x, grid, x);
 }
 
 
-int BMI_Get_grid_cell_count(BMI_Model * model, const char * name,
-    int * n_cells) {
-  call_bmi_and_return(model, get_grid_cell_count, name, n_cells);
+int BMI_Get_grid_y(BMI_Model * model, int grid, double * y) {
+  call_bmi_and_return(model, get_grid_y, grid, y);
 }
 
 
-int BMI_Get_grid_point_count(BMI_Model * model, const char * name,
-    int * n_points) {
-  call_bmi_and_return(model, get_grid_point_count, name, n_points);
+int BMI_Get_grid_z(BMI_Model * model, int grid, double * z) {
+  call_bmi_and_return(model, get_grid_z, grid, z);
 }
 
 
-int BMI_Get_grid_vertex_count(BMI_Model * model, const char * name,
-    int * n_verts) {
-  call_bmi_and_return(model, get_grid_vertex_count, name, n_verts);
+int BMI_Get_grid_cell_count(BMI_Model * model, int grid, int * n_cells) {
+  call_bmi_and_return(model, get_grid_cell_count, grid, n_cells);
 }
 
 
-int BMI_Get_grid_connectivity(BMI_Model * model, const char * name,
-    int * connectivity) {
-  call_bmi_and_return(model, get_grid_connectivity, name, connectivity);
+int BMI_Get_grid_point_count(BMI_Model * model, int grid, int * n_points) {
+  call_bmi_and_return(model, get_grid_point_count, grid, n_points);
 }
 
 
-int BMI_Get_grid_offset(BMI_Model * model, const char * name, int * offset) {
-  call_bmi_and_return(model, get_grid_offset, name, offset);
+int BMI_Get_grid_vertex_count(BMI_Model * model, int grid, int * n_verts) {
+  call_bmi_and_return(model, get_grid_vertex_count, grid, n_verts);
+}
+
+
+int BMI_Get_grid_connectivity(BMI_Model * model, int grid, int * connectivity) {
+  call_bmi_and_return(model, get_grid_connectivity, grid, connectivity);
+}
+
+
+int BMI_Get_grid_offset(BMI_Model * model, int grid, int * offset) {
+  call_bmi_and_return(model, get_grid_offset, grid, offset);
 }
 
 

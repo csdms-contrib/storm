@@ -13,7 +13,7 @@ main (void)
 {
   BMI_Model *model = (BMI_Model*)malloc (sizeof(BMI_Model));
 
-  Construct_storm_bmi(model);
+  register_bmi_storm (model);
 
   BMI_Initialize (model, NULL);
 
@@ -82,8 +82,11 @@ void
 print_var_info (BMI_Model *model, const char *var)
 {
   int n_dims = 0;
+  int grid;
 
-  BMI_Get_var_rank (model, var, &n_dims);
+  BMI_Get_var_grid (model, var, &grid);
+
+  BMI_Get_grid_rank (model, grid, &n_dims);
 
   {
     char type[BMI_MAX_TYPE_NAME];
@@ -96,10 +99,10 @@ print_var_info (BMI_Model *model, const char *var)
       spacing = (double*) malloc (sizeof (double)*n_dims);
       origin = (double*) malloc (sizeof (double)*n_dims);
 
-      BMI_Get_grid_type (model, var, type);
-      BMI_Get_grid_shape (model, var, shape);
-      BMI_Get_grid_spacing (model, var, spacing);
-      BMI_Get_grid_origin (model, var, origin);
+      BMI_Get_grid_type (model, grid, type);
+      BMI_Get_grid_shape (model, grid, shape);
+      BMI_Get_grid_spacing (model, grid, spacing);
+      BMI_Get_grid_origin (model, grid, origin);
 
       fprintf (stdout, "\n");
       fprintf (stdout, "Name: %s\n", var);
