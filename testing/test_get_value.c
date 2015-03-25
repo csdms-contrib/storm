@@ -51,12 +51,15 @@ print_var_values (void *model, const char *var_name)
   int len;
   int rank;
   int *shape;
+  int grid;
+  
+  BMI_Get_var_grid (model, var_name, &grid);
 
-  BMI_Get_var_rank (model, var_name, &rank);
+  BMI_Get_grid_rank (model, grid, &rank);
   fprintf (stderr, "rank = %d\n", rank);
   shape = (int*) malloc (sizeof (int) * rank);
 
-  BMI_Get_grid_shape (model, var_name, shape);
+  BMI_Get_grid_shape (model, grid, shape);
 
   {
     int n;

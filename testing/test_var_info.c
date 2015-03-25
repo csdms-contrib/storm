@@ -86,12 +86,14 @@ print_var_info (BMI_Model *model, const char *var)
   int n_dims = 0;
   int size = 0;
   int n_bytes = 0;
+  int grid;
 
   BMI_Get_var_type (model, var, type);
   BMI_Get_var_units (model, var, units);
-  BMI_Get_var_rank (model, var, &n_dims);
-  BMI_Get_var_size (model, var, &size);
   BMI_Get_var_nbytes (model, var, &n_bytes);
+  BMI_Get_var_grid (model, var, &grid);
+  BMI_Get_grid_rank (model, grid, &n_dims);
+  BMI_Get_grid_size (model, grid, &size);
 
   fprintf (stdout, "\n");
   fprintf (stdout, "Name: %s\n", var);
