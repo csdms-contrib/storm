@@ -363,11 +363,18 @@ Get_grid_type (void *self, const char *name, char *type)
   return status;
 }
 
-
+/*
+   The output 2D wind fields are assigned an id of 0; the input
+   parameters are scalars, and are assigned an id of 1.
+*/
 static int
 Get_var_grid (void *self, const char *name, int *grid)
 {
-  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+  if ((strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) || 
+      (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0)) {
+    *grid = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__row_index") == 0) {
     *grid = 1;
     return BMI_SUCCESS;
   } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
@@ -390,12 +397,6 @@ Get_var_grid (void *self, const char *name, int *grid)
     return BMI_SUCCESS;
   } else if (strcmp (name, "cyclone__radius") == 0) {
     *grid = 1;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
-    *grid = 0;
-    return BMI_SUCCESS;
-  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
-    *grid = 0;
     return BMI_SUCCESS;
   }
   else {
