@@ -13,7 +13,7 @@ main (void)
 {
   BMI_Model *model = (BMI_Model*)malloc (sizeof(BMI_Model));
 
-  Construct_storm_bmi(model);
+  register_bmi_storm (model);
 
   BMI_Initialize (model, NULL);
 

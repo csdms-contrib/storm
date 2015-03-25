@@ -7,7 +7,7 @@ extern "C" {
 
 #include "bmi.h"
 
-BMI_Model* Construct_storm_bmi(BMI_Model *model);
+BMI_Model* register_bmi_storm(BMI_Model *model);
 
 #if defined(__cplusplus)
 }

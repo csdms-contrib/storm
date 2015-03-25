@@ -594,7 +594,7 @@ Get_component_name (void *self, char *name)
 
 
 BMI_Model *
-Construct_storm_bmi(BMI_Model *model)
+register_bmi_storm (BMI_Model *model)
 {
   if (model) {
     model->self = NULL;
