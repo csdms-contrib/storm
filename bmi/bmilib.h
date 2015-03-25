@@ -27,10 +27,9 @@ int BMI_Get_current_time(BMI_Model*, double *);
 int BMI_Get_start_time(BMI_Model*, double *);
 int BMI_Get_end_time(BMI_Model*, double *);
 
+int BMI_Get_var_grid(BMI_Model * model, const char * name, int * grid);
 int BMI_Get_var_type(BMI_Model * model, const char * name, char * type);
 int BMI_Get_var_units(BMI_Model * model, const char * name, char * units);
-int BMI_Get_var_rank(BMI_Model * model, const char * name, int * rank);
-int BMI_Get_var_size(BMI_Model * model, const char * name, int * rank);
 int BMI_Get_var_nbytes(BMI_Model * model, const char * name, int * nbytes);
 
 int BMI_Get_value(BMI_Model *, const char *, void *);
@@ -41,22 +40,25 @@ int BMI_Set_value(BMI_Model *, const char *, void *);
 int BMI_Set_value_ptr(BMI_Model *, const char *, void **);
 int BMI_Set_value_at_indices(BMI_Model *, const char *, int *, int, void *);
 
-int BMI_Get_grid_type(BMI_Model * model, const char * name, char * type);
-int BMI_Get_grid_shape(BMI_Model * model, const char * name, int * shape);
-int BMI_Get_grid_spacing(BMI_Model * model, const char * name, double * spacing);
-int BMI_Get_grid_origin(BMI_Model * model, const char * name, double * origin);
+int BMI_Get_grid_rank(BMI_Model * model, int grid, int * rank);
+int BMI_Get_grid_size(BMI_Model * model, int grid, int * rank);
+int BMI_Get_grid_type(BMI_Model * model, int grid, char * type);
+int BMI_Get_grid_shape(BMI_Model * model, int grid, int * shape);
+int BMI_Get_grid_spacing(BMI_Model * model, int grid, double * spacing);
+int BMI_Get_grid_origin(BMI_Model * model, int grid, double * origin);
 
-int BMI_Get_grid_x(BMI_Model * model, const char * name, double * x);
-int BMI_Get_grid_y(BMI_Model * model, const char * name, double * y);
-int BMI_Get_grid_z(BMI_Model * model, const char * name, double * z);
+int BMI_Get_grid_x(BMI_Model * model, int grid, double * x);
+int BMI_Get_grid_y(BMI_Model * model, int grid, double * y);
+int BMI_Get_grid_z(BMI_Model * model, int grid, double * z);
 
-int BMI_Get_grid_cell_count(BMI_Model * model, const char * name, int * n_cells);
-int BMI_Get_grid_point_count(BMI_Model * model, const char * name, int * n_points);
-int BMI_Get_grid_vertex_count(BMI_Model * model, const char * name, int * n_verts);
+int BMI_Get_grid_cell_count(BMI_Model * model, int grid, int * n_cells);
+int BMI_Get_grid_point_count(BMI_Model * model, int grid, int * n_points);
+int BMI_Get_grid_vertex_count(BMI_Model * model, int grid, int * n_verts);
 
-int BMI_Get_grid_connectivity(BMI_Model * model, const char * name, int * connectivity);
-int BMI_Get_grid_offset(BMI_Model * model, const char * name, int * offset);
+int BMI_Get_grid_connectivity(BMI_Model * model, int grid, int * connectivity);
+int BMI_Get_grid_offset(BMI_Model * model, int grid, int * offset);
 
+BMI_Model * register_bmi_model (const char * file, const char * func);
 
 #if defined(__cplusplus)
 }
