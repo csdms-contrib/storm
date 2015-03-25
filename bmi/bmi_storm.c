@@ -407,6 +407,47 @@ Get_grid_type (void *self, const char *name, char *type)
 
 
 static int
+Get_var_grid (void *self, const char *name, int *grid)
+{
+  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    *grid = 1;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+    *grid = 0;
+    return BMI_SUCCESS;
+  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
+    *grid = 0;
+    return BMI_SUCCESS;
+  }
+  else {
+    *grid = -1;
+    return BMI_FAILURE;
+  }
+}
+
+
+static int
 Get_value_ptr (void *self, const char *name, void **dest)
 {
   int status = BMI_FAILURE;
