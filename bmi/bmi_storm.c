@@ -313,6 +313,38 @@ Get_var_type (void *self, const char *name, char *type)
 
 
 static int
+Get_var_itemsize (void *self, const char *name, int *itemsize)
+{
+  if (strcmp (name, "model_grid_cell__row_index") == 0) {
+    *itemsize = sizeof(int);
+  } else if (strcmp (name, "model_grid_cell__column_index") == 0) {
+    *itemsize = sizeof(int);
+  } else if (strcmp (name, "cyclone__magnitude_of_velocity") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "cyclone__azimuth_angle_of_velocity") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "atmosphere_bottom_air__pressure") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "atmosphere_bottom_air__reference_pressure") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "cyclone_air_flow_max_speed__radius") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "cyclone__radius") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "atmosphere_air_flow__east_component_of_velocity") == 0) {
+    *itemsize = sizeof(double);
+  } else if (strcmp (name, "atmosphere_air_flow__north_component_of_velocity") == 0) {
+    *itemsize = sizeof(double);
+  }
+  else {
+    *itemsize = 0;
+    return BMI_FAILURE;
+  }
+  return BMI_SUCCESS;
+}
+
+
+static int
 Get_var_units (void *self, const char *name, char *units)
 {
   if (strcmp (name, "model_grid_cell__row_index") == 0) {
@@ -592,6 +624,7 @@ register_bmi_storm (BMI_Model *model)
 
     model->get_var_grid = Get_var_grid;
     model->get_var_type = Get_var_type;
+    model->get_var_itemsize = Get_var_itemsize;
     model->get_var_units = Get_var_units;
     model->get_var_nbytes = Get_var_nbytes;
     model->get_current_time = Get_current_time;
