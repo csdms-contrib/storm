@@ -3,8 +3,7 @@ language: c
 
 register: register_bmi_storm
 includes:
-  - "#include <bmi/bmi_storm.h>"
-  - "#include <bmi/bmilib.h>"
+  - "#include <storm/bmi_storm.h>"
 cflags:
   pkgconfig: storm
 libs:
